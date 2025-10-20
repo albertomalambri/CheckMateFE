@@ -1,0 +1,40 @@
+<h1>Partita</h1>
+
+@if (partita; as p) {
+  <p>Giocatore bianco: {{ p.giocatoreBianco }}</p>
+  <p>Giocatore nero: {{ p.giocatoreNero }}</p>
+  <p>Risultato: {{ p.risultato }}</p>
+  <p>FEN finale: {{ p.statoFinaleFEN }}</p>
+
+  <h3>Mossa principale:</h3>
+  @if (p.mosse.length > 0) {
+    <div>
+      <span>Mossa numero {{ p.mosse[0].numero }}: </span>
+      <span>{{ p.mosse[0].pezzo }} da {{ p.mosse[0].da }} a {{ p.mosse[0].a }}</span>
+      @if (p.mosse[0].cattura) { <span> (cattura)</span> }
+      @if (p.mosse[0].arrocco) { <span> (arrocco)</span> }
+      @if (p.mosse[0].promozione) { <span> (promozione)</span> }
+    </div>
+  }
+  @else {
+    <p>Nessuna mossa disponibile.</p>
+  }
+}
+@else {
+  <p>Caricamento partita in corso...</p>
+}
+
+<div class="scacchiera">
+  @for (r of righe; track $index)
+  {
+    @for (c of colonne; track $index)
+    {
+      <div class="cella" [class.bianca]="isBianca(r, c)" [class.nera]="!isBianca(r, c)">
+        {{ getPezzo(r, c) }}
+      </div>
+    }
+  }
+</div>
+
+
+
