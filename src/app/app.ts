@@ -4,7 +4,7 @@ import {PartitaViewComponent} from './component/partita-view/partita-view';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, PartitaViewComponent],
+  imports: [PartitaViewComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
