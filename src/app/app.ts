@@ -1,13 +1,19 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {Navbar} from './navbar/navbar';
+import {RouterModule, RouterOutlet} from '@angular/router';
 import {PartitaViewComponent} from './component/partita-view/partita-view';
+import {Navbar2} from './navbar2/navbar2';
+
 
 @Component({
   selector: 'app-root',
-  imports: [PartitaViewComponent],
+  standalone: true,
+  imports: [Navbar, RouterOutlet, RouterModule, PartitaViewComponent, Navbar2],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppComponent {
   protected readonly title = signal('CheckMateFE');
+  chessBoard: any;
 }
