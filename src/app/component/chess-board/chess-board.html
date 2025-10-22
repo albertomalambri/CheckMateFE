@@ -1,0 +1,51 @@
+<div class="chessboard-wrapper">
+  <!-- Coordinate superiori -->
+  @if (showCoords) {
+    <div class="coords top">
+      @for (c of columns; track c) {
+        <span>{{ c.toUpperCase() }}</span>
+      }
+    </div>
+  }
+
+  <!-- Scacchiera principale -->
+  <div class="chessboard">
+    @for (row of board; track rowIndex; let rowIndex = $index) {
+      <div class="row">
+        @if (showCoords) {
+          <div class="row-coord">{{ row[0].row + 1 }}</div>
+        }
+
+        @for (sq of row; track sq.coord) {
+          <div
+            class="square"
+            [class.white]="sq.color === 'white'"
+            [class.black]="sq.color === 'black'"
+            [attr.data-coord]="sq.coord"
+            role="button"
+            tabindex="0"
+            (click)="onSquareClick(sq)"
+            (keyup.enter)="onSquareClick(sq)"
+          >
+            @if (sq.piece) {
+              <div class="piece">{{ sq.piece }}</div>
+            }
+          </div>
+        }
+
+        @if (showCoords) {
+          <div class="row-coord">{{ row[0].row + 1 }}</div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Coordinate inferiori -->
+  @if (showCoords) {
+    <div class="coords bottom">
+      @for (c of columns; track c) {
+        <span>{{ c.toUpperCase() }}</span>
+      }
+    </div>
+  }
+</div>

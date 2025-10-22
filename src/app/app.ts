@@ -3,7 +3,7 @@ import {Navbar} from './navbar/navbar';
 import {RouterModule, RouterOutlet} from '@angular/router';
 import {PartitaViewComponent} from './component/partita-view/partita-view';
 import {Navbar2} from './navbar2/navbar2';
-import {ChessBoardComponent}  from './component/chess-board/chess-board';
+import {ChessBoardComponent} from './component/chess-board/chess-board';
 
 
 @Component({
