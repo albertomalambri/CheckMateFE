@@ -13,4 +13,5 @@ export class PartitaService {
   {
     return this.http.get<Partita>(`${this.baseUrl}/partita`);
   }
+
 }

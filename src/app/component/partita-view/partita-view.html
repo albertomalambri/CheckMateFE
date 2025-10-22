@@ -1,34 +1,34 @@
-<h1>Partita</h1>
+<h1 class="titolo-partita">Partita di Scacchi</h1>
 
-@if (partita; as p) {
-  <p>Giocatore bianco: {{ p.giocatoreBianco }}</p>
-  <p>Giocatore nero: {{ p.giocatoreNero }}</p>
-  <p>Risultato: {{ p.risultato }}</p>
-  <p>FEN finale: {{ p.statoFinaleFEN }}</p>
+<div class="info-partita">
+  @if (partita; as p) {
+    <p><strong>Giocatore Bianco:</strong> {{ p.giocatoreBianco }}</p>
+    <p><strong>Giocatore Nero:</strong> {{ p.giocatoreNero }}</p>
+    <p><strong>Risultato:</strong> {{ p.risultato }}</p>
+    <p><strong>FEN finale:</strong> {{ p.statoFinaleFEN }}</p>
 
-  <h3>Mossa principale:</h3>
-  @if (p.mosse.length > 0) {
-    <div>
-      <span>Mossa numero {{ p.mosse[0].numero }}: </span>
-      <span>{{ p.mosse[0].pezzo }} da {{ p.mosse[0].da }} a {{ p.mosse[0].a }}</span>
-      @if (p.mosse[0].cattura) { <span> (cattura)</span> }
-      @if (p.mosse[0].arrocco) { <span> (arrocco)</span> }
-      @if (p.mosse[0].promozione) { <span> (promozione)</span> }
-    </div>
+    <h3>Mossa principale:</h3>
+    @if (p.mosse.length > 0) {
+      <div class="mossa-principale">
+        <span class="numero-mossa">Mossa {{ p.mosse[0].numero }}:</span>
+        <span class="descrizione-mossa">{{ p.mosse[0].pezzo }} da {{ p.mosse[0].da }} a {{ p.mosse[0].a }}</span>
+        @if (p.mosse[0].cattura) { <span class="tag-mossa cattura">Cattura</span> }
+        @if (p.mosse[0].arrocco) { <span class="tag-mossa arrocco">Arrocco</span> }
+        @if (p.mosse[0].promozione) { <span class="tag-mossa promozione">Promozione</span> }
+      </div>
+    }
+    @else {
+      <p class="nessuna-mossa">Nessuna mossa disponibile.</p>
+    }
   }
   @else {
-    <p>Nessuna mossa disponibile.</p>
+    <p class="loading">Caricamento partita in corso...</p>
   }
-}
-@else {
-  <p>Caricamento partita in corso...</p>
-}
+</div>
 
 <div class="scacchiera">
-  @for (r of righe; track $index)
-  {
-    @for (c of colonne; track $index)
-    {
+  @for (r of righe; track $index) {
+    @for (c of colonne; track $index) {
       <div class="cella" [class.bianca]="isBianca(r, c)" [class.nera]="!isBianca(r, c)">
         {{ getPezzo(r, c) }}
       </div>
