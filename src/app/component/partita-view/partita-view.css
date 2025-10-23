@@ -1,0 +1,107 @@
+/* Wrapper della scacchiera per centrarla */
+.scacchiera-wrapper {
+  display: flex;
+  justify-content: center; /* centra orizzontalmente */
+  align-items: center;     /* centra verticalmente se vuoi */
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Body senza padding che rompe centratura */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1c1c1c;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #f0e6de;
+}
+
+/* Titolo della partita */
+.titolo-partita {
+  text-align: center;
+  color: #d35400;
+  margin-bottom: 50px;
+  font-size: 2rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Info partita */
+.info-partita {
+  background-color: #2c2c2c;
+  padding: 20px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  margin-bottom: 30px;
+}
+
+.info-partita p {
+  margin: 8px 0;
+  font-size: 1rem;
+  color: #a04000;
+}
+
+.mossa-principale {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.tag-mossa {
+  background-color: #d35400;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-size: 0.85rem;
+}
+
+.tag-mossa.cattura { background-color: #e67e22; }
+.tag-mossa.arrocco { background-color: #a04000; }
+.tag-mossa.promozione { background-color: #f39c12; color: #1c1c1c; }
+
+/* Scacchiera */
+.scacchiera {
+  width: 450px;
+  max-width: 90vw;            /* dimensione fissa piccola */
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  aspect-ratio: 1 / 1;
+  gap: 2px;
+  border: 2px solid #d35400;
+  border-radius: 10px;
+  margin: 0 auto;           /* centra orizzontalmente */
+}
+
+/* Celle */
+.cella {
+  aspect-ratio: 1 / 1;      /* sempre quadrate */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Pezzi all'interno delle celle */
+.cella img,
+.cella app-pedone,
+.cella app-torre,
+.cella app-cavallo,
+.cella app-alfiere,
+.cella app-regina,
+.cella app-re {
+  width: 60%;              /* ridotto per non distorcere la cella */
+  height: 60%;
+  object-fit: contain;      /* mantiene proporzioni immagine */
+}
+
+/* Colori celle */
+.cella.bianca { background-color: #f5e0d3; color: #1c1c1c; }
+.cella.nera { background-color: #3c3c3c; color: #f0e6de; }
+
+/* Hover leggero */
+.cella:hover { transform: scale(1.05); transition: transform 0.2s; }
