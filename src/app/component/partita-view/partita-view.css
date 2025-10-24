@@ -29,20 +29,68 @@ body {
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
-/* Info partita */
+
 .info-partita {
-  background-color: #2c2c2c;
-  padding: 20px 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-  margin-bottom: 30px;
+  background-color: #1e1e1e;           /* grigio molto scuro, più moderno */
+  padding: 16px 20px;                  /* meno ingombrante */
+  border-radius: 8px;                  /* angoli più morbidi e compatti */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  margin-bottom: 24px;
+
+  border: 1px solid #3a3a3a;           /* bordo sottile per definizione */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.info-partita:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.45);
 }
 
 .info-partita p {
-  margin: 8px 0;
-  font-size: 1rem;
-  color: #a04000;
+  margin: 6px 0;
+  font-size: 0.95rem;                  /* leggermente più piccolo e pulito */
+  color: #e0e0e0;                      /* testo chiaro leggibile su sfondo scuro */
 }
+
+.info-partita strong {
+  color: #ffb74d;                      /* accento ambrato/caldo, elegante */
+  font-weight: 600;
+}
+
+/* eventuale titolo interno come "Mossa principale" */
+.info-partita h3 {
+  margin-top: 14px;
+  font-size: 1.05rem;
+  color: #ff9800;
+  font-weight: 600;
+  border-bottom: 1px solid #3a3a3a;
+  padding-bottom: 4px;
+}
+
+/* per armonia visiva del loading */
+.info-partita .loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #ff5555;
+  background-color: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin: 10px auto;
+  animation: fadePulse 1.6s ease-in-out infinite;
+}
+
+@keyframes fadePulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.info-partita {
+  text-align: center;
+}
+
 
 .mossa-principale {
   display: flex;
@@ -105,3 +153,52 @@ body {
 
 /* Hover leggero */
 .cella:hover { transform: scale(1.05); transition: transform 0.2s; }
+
+.controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.start-btn {
+  background: #3c3c3c;
+  color: chocolate;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.start-btn:disabled {
+  background: #888;
+  cursor: not-allowed;
+}
+
+.loading {
+  display: inline-flex;          /* solo grande quanto il testo */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  font-size: 0.875rem;           /* piccolo (~14px) */
+  color: #d32f2f;                /* rosso acceso */
+
+  background-color: #f5f5f5;     /* grigio chiaro */
+  border: 1px solid #e0e0e0;     /* contorno sottile */
+  border-radius: 6px;            /* angoli arrotondati */
+
+  padding: 6px 12px;             /* spazio interno equilibrato */
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+
+  animation: fadePulse 1.6s ease-in-out infinite;
+  margin: 0 auto;                /* centrato orizzontalmente */
+}
+
+/* leggero effetto pulsante */
+@keyframes fadePulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
