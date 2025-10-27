@@ -1,9 +1,13 @@
-<app-navbar2></app-navbar2>
-<app-navbar></app-navbar>
+<!-- Loader -->
+<div class="loader" *ngIf="loading">
+  <div class="spinner"></div>
+</div>
 
+<app-navbar></app-navbar>
+<app-navbar2></app-navbar2>
 <router-outlet></router-outlet>
 
-<app-partita-view></app-partita-view>
+
 
 
 
