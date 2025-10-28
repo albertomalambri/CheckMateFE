@@ -1,0 +1,86 @@
+:host {
+  display: block;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.chessboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* coordinate sopra/sotto */
+.coords {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  width: 100%;
+  max-width: 640px;
+  margin: 6px 0;
+  color: #333;
+  font-weight: 600;
+  gap: 0;
+}
+.coords.top { margin-bottom: 8px; }
+.coords.bottom { margin-top: 8px; }
+
+/* scacchiera: righe impilate verticalmente */
+.chessboard {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #444;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ogni riga contiene 8 caselle + coordinate laterali opzionali */
+.row {
+  display: grid;
+  grid-template-columns: 24px repeat(8, 1fr) 24px;
+  align-items: stretch;
+  height: calc(640px / 8 / 1.0);
+}
+
+/* coordinate di lato */
+.row-coord {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #222;
+  font-weight: 600;
+}
+
+/* caselle */
+.square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  font-size: 28px;
+  cursor: pointer;
+  transition: background 150ms ease, transform 100ms ease;
+}
+.square.white {
+  background: #f0d9b5;
+}
+.square.black {
+  background: #b58863;
+}
+.square:active { transform: scale(.98); }
+
+/* pezzo */
+.piece {
+  font-size: 28px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* responsive: riduci scacchiera su schermi piccoli */
+@media (max-width: 480px) {
+  :host { max-width: 320px; }
+  .row { height: calc(320px / 8); }
+  .piece { font-size: 20px; }
+}
