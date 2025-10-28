@@ -5,6 +5,8 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 
 <!------ Include the above in your HEAD tag ---------->
 
@@ -54,24 +56,52 @@
         </div>
       </li>
     </ul>
-    <ul class="navbar-nav ">
+
+    <!-- 🔹 Se NON loggato -->
+    <ul class="navbar-nav" *ngIf="!isLoggedIn">
       <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fa fa-bell">
-            <span class="badge badge-info">0</span>
-          </i>
-          Login
-        </a>
+        <a class="nav-link" href="#" (click)="openLogin()">Login</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fa fa-globe">
-            <span class="badge badge-success">0</span>
-          </i>
-          Register
+        <a class="nav-link" href="#" (click)="openRegister()">Register</a>
+      </li>
+    </ul>
+
+    <!-- Se loggato -->
+    <ul class="navbar-nav" *ngIf="isLoggedIn">
+      <li class="nav-item">
+        <span class="nav-link">Ciao, {{ username || 'utente' }}!</span>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" (click)="logout()">
+          <i class="bi bi-door-closed"></i> Logout
         </a>
       </li>
     </ul>
+
+    <!-- 🔹 LOGIN MODAL -->
+    <div class="modal-overlay" *ngIf="isLoginOpen" (click)="closeModals()">
+      <div class="auth-modal" (click)="$event.stopPropagation()">
+        <h2>Login</h2>
+        <input type="text" placeholder="Username" [(ngModel)]="loginUsername" />
+        <input type="password" placeholder="Password" [(ngModel)]="loginPassword" />
+        <button class="btn-primary" (click)="submitLogin()">Accedi</button>
+        <p class="link" (click)="openRegister()">Non hai un account? Registrati</p>
+      </div>
+    </div>
+
+    <!-- 🔹 REGISTER MODAL -->
+    <div class="modal-overlay" *ngIf="isRegisterOpen" (click)="closeModals()">
+      <div class="auth-modal" (click)="$event.stopPropagation()">
+        <h2>Registrati</h2>
+        <input type="text" placeholder="Username" [(ngModel)]="registerUsername" />
+        <input type="email" placeholder="Email" [(ngModel)]="registerEmail" />
+        <input type="password" placeholder="Password" [(ngModel)]="registerPassword" />
+        <button class="btn-primary" (click)="submitRegister()">Crea Account</button>
+        <p class="link" (click)="openLogin()">Hai già un account? Accedi</p>
+      </div>
+    </div>
+
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>

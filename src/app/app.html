@@ -1,13 +1,22 @@
 <!-- Loader -->
-<div class="loader" *ngIf="loading">
-  <div class="spinner"></div>
+<div class="page-loader" *ngIf="isLoading">
+  <div class="chess-plane">
+    <!-- Piano fittizio -->
+    <div class="floor"></div>
+
+    <!-- Pezzi -->
+    <img src="https://i.postimg.cc/Z5101SG7/f9957f0e-276e-4469-bcca-8ccdec842bd4.png" alt="Torre" class="piece torre" />
+    <img src="https://i.postimg.cc/xjRJqBmN/204ae36f-6251-45f8-8854-9834d68d98a5.png" alt="Pedone" class="piece pedone" />
+  </div>
+</div>
+
+<div class="app-content" [class.hidden]="isLoading">
+  <router-outlet></router-outlet>
 </div>
 
 <app-navbar></app-navbar>
 <app-navbar2></app-navbar2>
-<router-outlet></router-outlet>
-
-
+<app-user-card></app-user-card>
 
 
 
