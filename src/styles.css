@@ -1,5 +1,10 @@
-html, body{
-  height: 100%;
-  margin : 0;
-  background: linear-gradient(135deg, #333, #111) !important;
+body {
+  background-color: #3b3b3b !important; /* 👈 qui metti il colore che vuoi */
+}
+
+.piece {
+  font-family: 'ChessMerida', sans-serif;
+  font-size: clamp(24px, 5vmin, 48px);
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
 }

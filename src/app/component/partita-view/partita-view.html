@@ -1,12 +1,11 @@
 <h1 class="titolo-partita">Partita di Scacchi</h1>
 
-<!-- 🔹 Info partita -->
 <div class="info-partita">
   @if (partita; as p) {
     <p><strong>Giocatore Bianco:</strong> {{ p.giocatoreBianco }}</p>
     <p><strong>Giocatore Nero:</strong> {{ p.giocatoreNero }}</p>
-    <p><strong>Risultato:</strong> {{ p.risultato || 'In corso...' }}</p>
-    <p><strong>FEN finale:</strong> {{ p.statoFinaleFEN || 'N/D' }}</p>
+    <p><strong>Risultato:</strong> {{ p.risultato }}</p>
+    <p><strong>FEN finale:</strong> {{ p.statoFinaleFEN }}</p>
 
     <h3>Mossa principale:</h3>
     @if (p.mosse.length > 0) {
@@ -27,70 +26,15 @@
   }
 </div>
 
-<!-- 🔹 Controlli -->
-<div class="controls">
-  <button (click)="startGame()" [disabled]="gameStarted" class="start-btn">
-    Inizia Partita
-  </button>
-</div>
-
-<!-- 🔹 Scacchiera -->
-<div class="scacchiera-wrapper">
-  <div class="scacchiera">
-    @for (r of righe; track $index) {
-      @for (c of colonne; track $index) {
-        <div class="cella"
-             [class.bianca]="isBianca(r, c)"
-             [class.nera]="!isBianca(r, c)"
-             (drop)="dropPezzo($event, r, c)"
-             (dragover)="allowDrop($event)">
-          <ng-container *ngIf="getPezzo(r, c) as pezzo">
-            <ng-container [ngSwitch]="pezzo.tipo">
-              <app-pedone *ngSwitchCase="'pedone'"
-                          [color]="pezzo.colore"
-                          draggable="true"
-                          (dragstart)="pickPezzo($event, r, c)">
-              </app-pedone>
-
-              <app-torre *ngSwitchCase="'torre'"
-                         [color]="pezzo.colore"
-                         draggable="true"
-                         (dragstart)="pickPezzo($event, r, c)">
-              </app-torre>
-
-              <app-cavallo *ngSwitchCase="'cavallo'"
-                           [color]="pezzo.colore"
-                           draggable="true"
-                           (dragstart)="pickPezzo($event, r, c)">
-              </app-cavallo>
-
-              <app-alfiere *ngSwitchCase="'alfiere'"
-                           [color]="pezzo.colore"
-                           draggable="true"
-                           (dragstart)="pickPezzo($event, r, c)">
-              </app-alfiere>
-
-              <app-regina *ngSwitchCase="'regina'"
-                          [color]="pezzo.colore"
-                          draggable="true"
-                          (dragstart)="pickPezzo($event, r, c)">
-              </app-regina>
-
-              <app-re *ngSwitchCase="'re'"
-                      [color]="pezzo.colore"
-                      draggable="true"
-                      (dragstart)="pickPezzo($event, r, c)">
-              </app-re>
-            </ng-container>
-          </ng-container>
-        </div>
-      }
+<div class="scacchiera">
+  @for (r of righe; track $index) {
+    @for (c of colonne; track $index) {
+      <div class="cella" [class.bianca]="isBianca(r, c)" [class.nera]="!isBianca(r, c)">
+        {{ getPezzo(r, c) }}
+      </div>
     }
-  </div>
+  }
 </div>
-
-
-
 
 
 

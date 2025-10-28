@@ -17,4 +17,5 @@ export class PartitaService {
     // Se vuoi puoi anche mappare start come “get partita corrente”
     return this.http.post<Partita>(`${this.baseUrl}/start`, {});
   }
+
 }
