@@ -9,9 +9,13 @@ export class PartitaService {
 
   constructor(private http: HttpClient) {}
 
-  getPartita(): Observable<Partita>
-  {
-    return this.http.get<Partita>(`${this.baseUrl}/partita`);
+  startPartita(): Observable<Partita> {
+    return this.http.post<Partita>(`${this.baseUrl}/start`, {});
+  }
+
+  getPartita(): Observable<Partita> {
+    // Se vuoi puoi anche mappare start come “get partita corrente”
+    return this.http.post<Partita>(`${this.baseUrl}/start`, {});
   }
 
 }

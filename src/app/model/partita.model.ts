@@ -1,3 +1,5 @@
+import {Pezzo} from './pezzo.model';
+
 export interface Mossa
 {
   numero: number;
@@ -17,4 +19,5 @@ export interface Partita
   risultato: string;
   statoFinaleFEN: string;
   mosse: Mossa[];
+  scacchiera?: (Pezzo | null)[][];
 }
