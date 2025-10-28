@@ -1,0 +1,22 @@
+<div class="chessboard-wrapper">
+  <div class="chessboard">
+    <div class="square"
+         *ngFor="let cell of cells"
+         [style.gridRow]="cell.row + 1"
+         [style.gridColumn]="cell.col + 1"
+         [class.white]="isWhiteSquare(cell.row, cell.col)"
+         [class.black]="!isWhiteSquare(cell.row, cell.col)"
+         (dragover)="allowDrop($event)"
+         (drop)="drop($event, cell.row, cell.col)">
+
+  <span *ngIf="cell.piece"
+        class="piece"
+        [ngClass]="pieceColors[cell.piece]"
+        draggable="true"
+        (dragstart)="drag($event, cell.row, cell.col)">
+    {{ cell.piece }}
+  </span>
+    </div>
+  </div>
+</div>
+

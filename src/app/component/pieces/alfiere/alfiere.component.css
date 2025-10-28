@@ -1,0 +1,11 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain; /* mantiene proporzioni senza deformare la cella */
+}

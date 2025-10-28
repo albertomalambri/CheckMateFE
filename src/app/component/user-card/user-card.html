@@ -1,0 +1,25 @@
+<div *ngIf="user$ | async as user; else noUser">
+  <div class="user-card">
+    <div class="user-avatar">
+      <img src="..." alt="Avatar utente" />
+    </div>
+    <div class="user-details">
+      <h2>{{ user.username }}</h2>
+      <p>Email: {{ user.email }}</p>
+      <p *ngIf="user.rank" class="rank">{{ user.rank }}</p>
+      <div class="stat">ELO: {{ user.elo }}</div>
+      <div class="stat">Partite: {{ user.partiteGiocate }}</div>
+      <div class="winrate-container">
+        Winrate: {{ user.winRate | number:'1.0-0' }}%
+        <div class="winrate-bar">
+          <div class="winrate-fill" [style.width.%]="user.winRate"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #noUser>Nessun utente loggato.</ng-template>
+
+
+
+
