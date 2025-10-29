@@ -1,12 +1,10 @@
 import { Component, HostListener } from '@angular/core';
 import {RouterLink} from "@angular/router";
-import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-homepage',
   imports: [
-    RouterLink,
-    NgIf
+    RouterLink
   ],
   templateUrl: './homepage.html',
   styleUrl: './homepage.css'

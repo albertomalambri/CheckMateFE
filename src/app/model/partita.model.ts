@@ -6,9 +6,9 @@ export interface Mossa
   da: string;
   a: string;
   pezzo: string;
-  cattura: boolean;
-  arrocco: boolean;
-  promozione: boolean;
+  cattura?: boolean;
+  arrocco?: boolean;
+  promozione?: boolean;
 }
 
 export interface Partita

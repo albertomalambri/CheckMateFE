@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {AuthService} from '../service/auth.service';
 import {User} from '../model/user.model';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 
 
 @Component({
@@ -11,7 +12,9 @@ import {User} from '../model/user.model';
   templateUrl: './navbar2.html',
   imports: [
     FormsModule,
-    CommonModule
+    CommonModule,
+    RouterLink,
+    RouterLinkActive
   ],
   styleUrls: ['./navbar2.css']
 })

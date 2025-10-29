@@ -8,4 +8,5 @@ export interface User {
   partiteGiocate?: number;
   winRate?: number;
   role?: string;
+  avatar?: string;
 }

@@ -1,8 +1,18 @@
 <div *ngIf="user$ | async as user; else noUser">
   <div class="user-card">
-    <div class="user-avatar">
-      <img src="..." alt="Avatar utente" />
+    <div class="user-avatar" (click)="toggleAvatarSelector()">
+      <img [src]="selectedAvatar || defaultAvatar" alt="Avatar utente" />
+
+
+      <!-- Selettore immagini -->
+      <div class="avatar-selector" *ngIf="showAvatarSelector">
+        <img *ngFor="let avatar of availableAvatars"
+             [src]="avatar"
+             alt="avatar"
+             (click)="changeAvatar(avatar, $event)" />
+      </div>
     </div>
+
     <div class="user-details">
       <h2>{{ user.username }}</h2>
       <p>Email: {{ user.email }}</p>
@@ -18,7 +28,10 @@
     </div>
   </div>
 </div>
-<ng-template #noUser>Nessun utente loggato.</ng-template>
+
+<ng-template #noUser>
+  Nessun utente loggato.
+</ng-template>
 
 
 

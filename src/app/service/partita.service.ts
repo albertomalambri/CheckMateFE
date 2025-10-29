@@ -5,7 +5,7 @@ import { Partita } from '../model/partita.model';
 
 @Injectable({ providedIn: 'root' })
 export class PartitaService {
-  private baseUrl = 'http://localhost:8080/api/mock';
+  private baseUrl = '/api/partita';
 
   constructor(private http: HttpClient) {}
 

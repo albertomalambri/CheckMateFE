@@ -5,13 +5,14 @@ import {RouterModule, RouterOutlet} from '@angular/router';
 import {PartitaViewComponent} from './component/partita-view/partita-view';
 import {CommonModule, NgIf} from '@angular/common';
 import {UserCard} from './component/user-card/user-card';
+import {Strategy} from './component/strategy/strategy';
 
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Navbar, RouterOutlet, RouterModule, PartitaViewComponent, Navbar2, NgIf, UserCard, CommonModule],
+  imports: [Navbar, RouterOutlet, RouterModule, PartitaViewComponent, Navbar2, NgIf, UserCard, CommonModule, Strategy],
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

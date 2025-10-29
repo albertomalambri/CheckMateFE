@@ -29,89 +29,117 @@ interface Pezzo {
   templateUrl: './partita-view.html',
   styleUrls: ['./partita-view.css']
 })
+
 export class PartitaViewComponent implements OnInit {
-  partita?: Partita;
+
+  partita: Partita = {
+    id: 0,
+    giocatoreBianco: '',
+    giocatoreNero: '',
+    risultato: '',
+    statoFinaleFEN: '',
+    mosse: [],
+    scacchiera: []
+  };
+
+
   scacchiera: (Pezzo | null)[][] = [];
   righe: number[] = [8, 7, 6, 5, 4, 3, 2, 1];
   colonne: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-  gameStarted = false;
+  gameStarted: boolean = false;
+  loading: boolean = false;
 
   constructor(private partitaService: PartitaService) {}
 
+  errorMessage = '';
+
   ngOnInit(): void {
-    // tenta di caricare una partita esistente
     this.partitaService.getPartita().subscribe({
       next: (data) => {
         this.partita = data;
-        this.gameStarted = true;
         this.scacchiera = data.scacchiera ?? this.initScacchieraDefault();
+        this.loading = false; // fine caricamento
       },
       error: () => {
-        console.log('Nessuna partita trovata, inizializzo scacchiera locale.');
-        this.initScacchieraDefault();
+        this.scacchiera = this.initScacchieraDefault();
+        this.loading = false;
       }
     });
   }
 
-  /** 🔹 Avvia una nuova partita (POST /api/mock/start) */
   startGame(): void {
     this.partitaService.startPartita().subscribe({
       next: (data) => {
         this.partita = data;
-        this.scacchiera = this.initScacchieraDefault(); // oppure data.scacchiera se il backend la restituisce
-        this.gameStarted = true;
+        this.scacchiera = data.scacchiera ?? this.initScacchieraDefault();
+        this.gameStarted = true; // ora il pulsante si disabilita
       },
       error: (err) => console.error('Errore avvio partita:', err)
     });
   }
 
-  /** 🔹 Scacchiera iniziale di fallback */
+
   initScacchieraDefault(): (Pezzo | null)[][] {
-    this.scacchiera = [
-      [
-        { tipo: 'torre', colore: 'black' },
-        { tipo: 'cavallo', colore: 'black' },
-        { tipo: 'alfiere', colore: 'black' },
-        { tipo: 'regina', colore: 'black' },
-        { tipo: 're', colore: 'black' },
-        { tipo: 'alfiere', colore: 'black' },
-        { tipo: 'cavallo', colore: 'black' },
-        { tipo: 'torre', colore: 'black' }
-      ],
-      Array(8).fill(null).map(() => ({ tipo: 'pedone', colore: 'black' })),
-      Array(8).fill(null),
-      Array(8).fill(null),
-      Array(8).fill(null),
-      Array(8).fill(null),
-      Array(8).fill(null).map(() => ({ tipo: 'pedone', colore: 'white' })),
-      [
-        { tipo: 'torre', colore: 'white' },
-        { tipo: 'cavallo', colore: 'white' },
-        { tipo: 'alfiere', colore: 'white' },
-        { tipo: 'regina', colore: 'white' },
-        { tipo: 're', colore: 'white' },
-        { tipo: 'alfiere', colore: 'white' },
-        { tipo: 'cavallo', colore: 'white' },
-        { tipo: 'torre', colore: 'white' }
-      ]
-    ];
-    return this.scacchiera;
+    const scacchiera: (Pezzo | null)[][] = [];
+
+    // Riga 8 (index 0)
+    scacchiera.push([
+      { tipo: 'torre', colore: 'black' },
+      { tipo: 'cavallo', colore: 'black' },
+      { tipo: 'alfiere', colore: 'black' },
+      { tipo: 'regina', colore: 'black' },
+      { tipo: 're', colore: 'black' },
+      { tipo: 'alfiere', colore: 'black' },
+      { tipo: 'cavallo', colore: 'black' },
+      { tipo: 'torre', colore: 'black' }
+    ]);
+
+    // Riga 7 (index 1) – pedoni neri
+    scacchiera.push(Array(8).fill(null).map(() => ({ tipo: 'pedone', colore: 'black' })));
+
+    // Righe 6-3 vuote
+    for (let i = 0; i < 4; i++) {
+      scacchiera.push(Array(8).fill(null));
+    }
+
+    // Riga 2 (index 6) – pedoni bianchi
+    scacchiera.push(Array(8).fill(null).map(() => ({ tipo: 'pedone', colore: 'white' })));
+
+    // Riga 1 (index 7) – pezzi bianchi
+    scacchiera.push([
+      { tipo: 'torre', colore: 'white' },
+      { tipo: 'cavallo', colore: 'white' },
+      { tipo: 'alfiere', colore: 'white' },
+      { tipo: 'regina', colore: 'white' },
+      { tipo: 're', colore: 'white' },
+      { tipo: 'alfiere', colore: 'white' },
+      { tipo: 'cavallo', colore: 'white' },
+      { tipo: 'torre', colore: 'white' }
+    ]);
+
+    this.scacchiera = scacchiera;
+    return scacchiera;
   }
 
-  // --- Helper di supporto ---
+  // --- Funzioni per colore celle e gestione pezzi ---
   isBianca(r: number, c: string): boolean {
     const colIndex = this.colonne.indexOf(c);
     return (r + colIndex) % 2 === 0;
   }
 
   getPezzo(r: number, c: string): Pezzo | null {
+    if (!this.scacchiera?.length) return null;
+
+    const rowIndex = 8 - r; // r=8 => 0, r=1 => 7
     const colIndex = this.colonne.indexOf(c);
-    return this.scacchiera[8 - r]?.[colIndex] ?? null;
+    if (rowIndex < 0 || rowIndex > 7 || colIndex < 0 || colIndex > 7) return null;
+
+    return this.scacchiera[rowIndex][colIndex] ?? null;
   }
 
   setPezzo(r: number, c: string, pezzo: Pezzo | null) {
     const colIndex = this.colonne.indexOf(c);
-    this.scacchiera[8 - r][colIndex] = pezzo;
+    this.scacchiera![8 - r][colIndex] = pezzo;
   }
 
   // --- Drag & Drop ---
