@@ -8,11 +8,7 @@ import { PedoneComponent } from '../pieces/pedone/pedone.component';
 import { ReComponent } from '../pieces/re/re.component';
 import { ReginaComponent } from '../pieces/regina/regina.component';
 import { TorreComponent } from '../pieces/torre/torre.component';
-
-interface Pezzo {
-  tipo: 'pedone' | 'torre' | 'cavallo' | 'alfiere' | 'regina' | 're';
-  colore: 'white' | 'black';
-}
+import {Pezzo} from '../../model/pezzo.model';
 
 @Component({
   selector: 'app-partita-view',
@@ -53,15 +49,21 @@ export class PartitaViewComponent implements OnInit {
 
   errorMessage = '';
 
+  convertResponse(data: any){
+    this.scacchiera = [];
+    for(let i = 0; i < 8; i++){
+      this.scacchiera.push(data.scacchiera.splice(0, 8));
+    }
+  }
+
   ngOnInit(): void {
     this.partitaService.getPartita().subscribe({
       next: (data) => {
         this.partita = data;
-        this.scacchiera = data.scacchiera ?? this.initScacchieraDefault();
+        this.convertResponse(data);
         this.loading = false; // fine caricamento
       },
       error: () => {
-        this.scacchiera = this.initScacchieraDefault();
         this.loading = false;
       }
     });
@@ -71,14 +73,14 @@ export class PartitaViewComponent implements OnInit {
     this.partitaService.startPartita().subscribe({
       next: (data) => {
         this.partita = data;
-        this.scacchiera = data.scacchiera ?? this.initScacchieraDefault();
+        this.convertResponse(data);
         this.gameStarted = true; // ora il pulsante si disabilita
       },
       error: (err) => console.error('Errore avvio partita:', err)
     });
   }
 
-
+/*
   initScacchieraDefault(): (Pezzo | null)[][] {
     const scacchiera: (Pezzo | null)[][] = [];
 
@@ -120,7 +122,7 @@ export class PartitaViewComponent implements OnInit {
     this.scacchiera = scacchiera;
     return scacchiera;
   }
-
+*/
   // --- Funzioni per colore celle e gestione pezzi ---
   isBianca(r: number, c: string): boolean {
     const colIndex = this.colonne.indexOf(c);
@@ -128,12 +130,14 @@ export class PartitaViewComponent implements OnInit {
   }
 
   getPezzo(r: number, c: string): Pezzo | null {
+
     if (!this.scacchiera?.length) return null;
 
     const rowIndex = 8 - r; // r=8 => 0, r=1 => 7
     const colIndex = this.colonne.indexOf(c);
     if (rowIndex < 0 || rowIndex > 7 || colIndex < 0 || colIndex > 7) return null;
-
+    if(!this.scacchiera[rowIndex][colIndex]?.pezzo)
+      return null;
     return this.scacchiera[rowIndex][colIndex] ?? null;
   }
 
@@ -166,6 +170,13 @@ export class PartitaViewComponent implements OnInit {
     this.setPezzo(r, c, pezzo);
     this.setPezzo(this.selectedPezzo.r, this.selectedPezzo.c, null);
     this.selectedPezzo = null;
+  }
+
+  getColorePezzo(pezzo: Pezzo){
+    if(pezzo.colorePezzo == "BIANCO"){
+      return "white"
+    }
+    return "black"
   }
 }
 

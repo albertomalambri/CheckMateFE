@@ -9,8 +9,8 @@ export class PartitaService {
 
   constructor(private http: HttpClient) {}
 
-  startPartita(): Observable<Partita> {
-    return this.http.post<Partita>(`${this.baseUrl}/start`, {});
+  startPartita(): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/start`, {});
   }
 
   getPartita(): Observable<Partita> {

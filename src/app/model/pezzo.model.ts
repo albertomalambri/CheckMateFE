@@ -1,4 +1,4 @@
 export interface Pezzo {
-  tipo: 'pedone' | 'torre' | 'cavallo' | 'alfiere' | 'regina' | 're';
-  colore: 'white' | 'black';
+  pezzo: 'PEDONE' | 'TORRE' | 'CAVALLO' | 'ALFIERE' | 'REGINA' | 'RE';
+  colorePezzo: 'BIANCO' | 'NERO';
 }
