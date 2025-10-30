@@ -1,7 +1,7 @@
 <h1 class="titolo-partita">Partita di Scacchi</h1>
 
 
-<!-- 🔹 Info partita -->
+<!--
 <div class="info-partita">
   @if (!loading && partita) {
     <p><strong>Giocatore Bianco:</strong> {{ partita.giocatoreBianco }}</p>
@@ -29,15 +29,15 @@
   }
 
 </div>
+-->
 
 
-
-<!-- 🔹 Controlli -->
+<!--Controlli -->
 <div class="controls">
   <button (click)="startGame()" [disabled]="gameStarted || loading">Inizia Partita</button>
 </div>
 
-<!-- 🔹 Scacchiera -->
+<!--Scacchiera -->
 <div class="scacchiera-wrapper">
   @if (!loading)
   {
@@ -111,6 +111,24 @@
   }
 </div>
 
+<!--
+<div class="chat-box" id="chatBox">
+  <div class="chat-header">
+    <h3>Chat Partita</h3>
+  </div>
+
+  <div class="chat-messages" id="chatMessages">
+    <div class="message received">
+      <span class="author">PawnMaster:</span> Buona fortuna!
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Scrivi un messaggio..." />
+    <button id="sendBtn">Invia</button>
+  </div>
+</div>
+-->
 
 
 

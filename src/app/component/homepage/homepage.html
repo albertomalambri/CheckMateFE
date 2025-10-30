@@ -1,56 +1,87 @@
 <div class="homepage-container">
   <header class="homepage-header">
-    <h1>Benvenuto su CheckMate</h1>
-    <p>Il miglior modo per perdere la sanità mentale!!</p>
+    <div class="header-content">
+      <h1>Benvenuto su CheckMate</h1>
+      <p>Il miglior modo per perdere la sanità mentale!!</p>
       <p>Mi raccomando, sigarette e alcool sono obbligatori!!</p>
-    <a routerLink="/partite" class="btn">Gioca ora</a>
+      <a routerLink="/partite" class="btn">Gioca ora</a>
+    </div>
   </header>
 
   <!-- Sezione card interattive -->
     <!-- Aggiungere colore in base al rank TODO -->
   <section class="homepage-cards">
-    <div class="card" routerLink="/partite">
-      <h3>Partite Veloci</h3>
-      <p>Inizia subito una partita e sfida altri giocatori.</p>
-    </div>
-    <div class="card" routerLink="/strategy">
-      <h3>Strategie</h3>
-      <p>Leggi guide e tutorial per migliorare il tuo gioco.</p>
-    </div>
-    <div class="card">
-      <h3>Ultime Notizie</h3>
-      <p>Scopri le novità del mondo degli scacchi.</p>
-    </div>
 
-      <div class="recent-matches">
-          <h2>Ultime Partite</h2>
-
-          <div class="matches-table">
-              <div class="match">
-                  <div class="match-id">#A1B2C3</div>
-                  <div class="players">👑 <strong>Lo Spacca Donne</strong> vs <strong>PawnMaster</strong></div>
-                  <div class="winner">🏆 Vincitore: <span>Lo Spacca Donne</span></div>
-                  <div class="points">+24 punti</div>
-                  <div class="date">26 Ottobre 2025</div>
-              </div>
-
-              <div class="match">
-                  <div class="match-id">#D4E5F6</div>
-                  <div class="players">♞ <strong>Lo Spacca Donne</strong> vs <strong>QueenSlayer</strong></div>
-                  <div class="winner">🏆 Vincitore: <span>Lo Spacca Donne</span></div>
-                  <div class="points">+18 punti</div>
-                  <div class="date">24 Ottobre 2025</div>
-              </div>
-
-              <div class="match">
-                  <div class="match-id">#G7H8I9</div>
-                  <div class="players">♟ <strong>Lo Spacca Donne</strong> vs <strong>CheckMateKing</strong></div>
-                  <div class="winner">🏆 Vincitore: <span>Lo Spacca Donne</span></div>
-                  <div class="points">+10 punti</div>
-                  <div class="date">22 Ottobre 2025</div>
-              </div>
-          </div>
+    <div class="homepage-cards">
+      <div class="card" routerLink="/partite">
+        <div class="card-content">
+          <h3>Partite Veloci</h3>
+          <p>Inizia subito una partita e sfida altri giocatori.</p>
+        </div>
+        <div class="card-image">
+          <img src="https://www.mattoscacco.com/wp-content/uploads/2025/06/sviluppo-cavalli.png" alt="Partite Veloci">
+        </div>
       </div>
+
+      <div class="card" routerLink="/strategy">
+        <div class="card-content">
+          <h3>Strategie</h3>
+          <p>Leggi guide e tutorial per migliorare il tuo gioco.</p>
+        </div>
+        <div class="card-image">
+          <img src="https://www.wikihow.com/images_en/thumb/5/54/Play-Chess-Step-14-Version-5.jpg/v4-460px-Play-Chess-Step-14-Version-5.jpg" alt="Strategie di gioco">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <h3>Ultime Notizie</h3>
+          <p>Scopri le novità del mondo degli scacchi.</p>
+        </div>
+        <div class="card-image">
+          <img src="https://pbs.twimg.com/media/G3xRWmQWAAAZRqk.jpg" alt="Ultime notizie">
+        </div>
+      </div>
+    </div>
+
+    <div class="recent-matches">
+      <h2>Ultime Partite</h2>
+
+      <div class="matches-table">
+        <div class="match">
+          <div class="match-id">#A1B2C3</div>
+          <div class="players">👑 <strong>Lo Spacca Donne</strong> vs <strong>PawnMaster</strong></div>
+          <div class="winner">🏆 Vincitore: <span>Lo Spacca Donne</span></div>
+          <div class="points">+24 punti</div>
+          <div class="date">26 Ottobre 2025</div>
+        </div>
+
+        <div class="match">
+          <div class="match-id">#A1B2C3</div>
+          <div class="players">👑 <strong>Lo Spacca Donne</strong> vs <strong>PawnMaster</strong></div>
+          <div class="winner">🏆 Vincitore: <span>Lo Spacca Donne</span></div>
+          <div class="points">+24 punti</div>
+          <div class="date">26 Ottobre 2025</div>
+        </div>
+
+        <div class="match">
+          <div class="match-id">#A1B2C3</div>
+          <div class="players">👑 <strong>Lo Spacca Donne</strong> vs <strong>PawnMaster</strong></div>
+          <div class="winner">🏆 Vincitore: <span>Lo Spacca Donne</span></div>
+          <div class="points">+24 punti</div>
+          <div class="date">26 Ottobre 2025</div>
+        </div>
+
+        <div class="match">
+          <div class="match-id">#A1B2C3</div>
+          <div class="players">👑 <strong>Lo Spacca Donne</strong> vs <strong>PawnMaster</strong></div>
+          <div class="winner">🏆 Vincitore: <span>Lo Spacca Donne</span></div>
+          <div class="points">+24 punti</div>
+          <div class="date">26 Ottobre 2025</div>
+        </div>
+
+      </div>
+    </div>
 
   </section>
 
@@ -69,10 +100,11 @@
     </div>
     <div class="footer-section">
       <h4>Creatori</h4>
-      <p>Brusa Simone (Front-End)</p>
-      <p>Pier Francesco Milani (Back-End)</p>
-      <p>Thilan Jayasuriya (Back-End)</p>
-      <p>Alberto Malambri (Back-End</p>
+      <p>Brusa Simone</p>
+      <p>Pier Francesco Milani</p>
+      <p>Thilan Jayasuriya</p>
+      <p>Alberto Malambri</p>
+      <p>Laura Autiero</p>
     </div>
   </footer>
 </div>

@@ -4,7 +4,7 @@
   justify-content: center; /* centra orizzontalmente */
   align-items: center;     /* centra verticalmente se vuoi */
   width: 100%;
-  margin-top: 20px;
+  margin-top: 100px;
 }
 
 /* Body senza padding che rompe centratura */
@@ -114,13 +114,13 @@ body {
 
 /* Scacchiera */
 .scacchiera {
-  width: 450px;
-  max-width: 90vw;            /* dimensione fissa piccola */
+  width: 600px;
+  max-width: 90vw;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   aspect-ratio: 1 / 1;
   gap: 2px;
-  border: 2px solid #d35400;
+  border: 10px solid #d35400;
   border-radius: 10px;
   margin: 0 auto;           /* centra orizzontalmente */
 }
@@ -142,9 +142,10 @@ body {
 .cella app-alfiere,
 .cella app-regina,
 .cella app-re {
-  width: 60%;              /* ridotto per non distorcere la cella */
-  height: 60%;
-  object-fit: contain;      /* mantiene proporzioni immagine */
+  padding-left: 10px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* Colori celle */
@@ -201,4 +202,102 @@ body {
 @keyframes fadePulse {
   0%, 100% { opacity: 0.6; }
   50% { opacity: 1; }
+}
+
+
+
+
+.chat-box {
+  position: relative; /* 🔸 Puoi cambiare in absolute, fixed, ecc. */
+  width: 320px;
+  height: 600px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+
+  /* 🔸 Puoi muoverla dove vuoi */
+  bottom: 600px;
+  left: 300px;
+}
+
+/* Header */
+.chat-header {
+  background: linear-gradient(135deg, #ff8c46, #ffb84d);
+  color: #222;
+  padding: 3px 15px;
+  font-weight: 200;
+  font-size: 1rem;
+  text-align: center;
+  user-select: none;
+}
+
+/* Messaggi */
+.chat-messages {
+  height: calc(100% - 95px); /* spazio dinamico */
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+
+.message {
+  max-width: 85%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  line-height: 1.4;
+  font-size: 0.9rem;
+}
+
+.message.sent {
+  align-self: flex-end;
+  background: rgba(255, 140, 70, 0.3);
+}
+
+.message.received {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.message .author {
+  font-weight: 600;
+  margin-right: 6px;
+  color: #ffa94d;
+}
+
+/* Input area */
+.chat-input {
+  display: flex;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  height: 55px;
+}
+
+.chat-input input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.chat-input button {
+  background: linear-gradient(135deg, #ff8c46, #ffb84d);
+  border: none;
+  color: #222;
+  font-weight: 600;
+  padding: 0 18px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.chat-input button:hover {
+  background: linear-gradient(135deg, #ffb84d, #ff8c46);
 }

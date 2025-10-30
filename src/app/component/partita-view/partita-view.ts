@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Partita } from '../../model/partita.model';
+import {Mossa, Partita} from '../../model/partita.model';
 import { PartitaService } from '../../service/partita.service';
 import { AlfiereComponent } from '../pieces/alfiere/alfiere.component';
 import { CavalloComponent } from '../pieces/cavallo/cavallo.component';
@@ -8,7 +8,18 @@ import { PedoneComponent } from '../pieces/pedone/pedone.component';
 import { ReComponent } from '../pieces/re/re.component';
 import { ReginaComponent } from '../pieces/regina/regina.component';
 import { TorreComponent } from '../pieces/torre/torre.component';
-import {Pezzo} from '../../model/pezzo.model';
+import {Pezzo, PezzoCodice} from '../../model/pezzo.model';
+import {cellaDTO} from '../../model/partita.model';
+import{ScacchieraGameStateDTO} from '../../model/partita.model';
+
+const CodiceToBackendPezzo: Record<PezzoCodice, string> = {
+  PE: 'pedone',
+  TO: 'torre',
+  CA: 'cavallo',
+  AL: 'alfiere',
+  RG: 'regina',
+  RE: 're'
+};
 
 @Component({
   selector: 'app-partita-view',
@@ -30,6 +41,7 @@ export class PartitaViewComponent implements OnInit {
 
   partita: Partita = {
     id: 0,
+    gameStateId: 0,
     giocatoreBianco: '',
     giocatoreNero: '',
     risultato: '',
@@ -37,7 +49,6 @@ export class PartitaViewComponent implements OnInit {
     mosse: [],
     scacchiera: []
   };
-
 
   scacchiera: (Pezzo | null)[][] = [];
   righe: number[] = [8, 7, 6, 5, 4, 3, 2, 1];
@@ -70,59 +81,20 @@ export class PartitaViewComponent implements OnInit {
   }
 
   startGame(): void {
-    this.partitaService.startPartita().subscribe({
-      next: (data) => {
-        this.partita = data;
-        this.convertResponse(data);
-        this.gameStarted = true; // ora il pulsante si disabilita
+    this.loading = true;
+    this.partitaService.getPartita().subscribe({
+      next: (partita) => {
+        this.partita = partita;
+        this.loading = false;
+        console.log('✅ Partita creata:', this.partita);
       },
-      error: (err) => console.error('Errore avvio partita:', err)
+      error: (err) => {
+        console.error(err);
+        this.loading = false;
+      }
     });
   }
 
-/*
-  initScacchieraDefault(): (Pezzo | null)[][] {
-    const scacchiera: (Pezzo | null)[][] = [];
-
-    // Riga 8 (index 0)
-    scacchiera.push([
-      { tipo: 'torre', colore: 'black' },
-      { tipo: 'cavallo', colore: 'black' },
-      { tipo: 'alfiere', colore: 'black' },
-      { tipo: 'regina', colore: 'black' },
-      { tipo: 're', colore: 'black' },
-      { tipo: 'alfiere', colore: 'black' },
-      { tipo: 'cavallo', colore: 'black' },
-      { tipo: 'torre', colore: 'black' }
-    ]);
-
-    // Riga 7 (index 1) – pedoni neri
-    scacchiera.push(Array(8).fill(null).map(() => ({ tipo: 'pedone', colore: 'black' })));
-
-    // Righe 6-3 vuote
-    for (let i = 0; i < 4; i++) {
-      scacchiera.push(Array(8).fill(null));
-    }
-
-    // Riga 2 (index 6) – pedoni bianchi
-    scacchiera.push(Array(8).fill(null).map(() => ({ tipo: 'pedone', colore: 'white' })));
-
-    // Riga 1 (index 7) – pezzi bianchi
-    scacchiera.push([
-      { tipo: 'torre', colore: 'white' },
-      { tipo: 'cavallo', colore: 'white' },
-      { tipo: 'alfiere', colore: 'white' },
-      { tipo: 'regina', colore: 'white' },
-      { tipo: 're', colore: 'white' },
-      { tipo: 'alfiere', colore: 'white' },
-      { tipo: 'cavallo', colore: 'white' },
-      { tipo: 'torre', colore: 'white' }
-    ]);
-
-    this.scacchiera = scacchiera;
-    return scacchiera;
-  }
-*/
   // --- Funzioni per colore celle e gestione pezzi ---
   isBianca(r: number, c: string): boolean {
     const colIndex = this.colonne.indexOf(c);
@@ -167,9 +139,39 @@ export class PartitaViewComponent implements OnInit {
     const pezzo = this.getPezzo(this.selectedPezzo.r, this.selectedPezzo.c);
     if (!pezzo) return;
 
-    this.setPezzo(r, c, pezzo);
-    this.setPezzo(this.selectedPezzo.r, this.selectedPezzo.c, null);
-    this.selectedPezzo = null;
+    const mossa: Mossa = {
+      numero: 0,
+      da: `${this.selectedPezzo.r}${this.selectedPezzo.c}`,
+      a: `${r}${c}`,
+      pezzo: CodiceToBackendPezzo[PezzoCodice[pezzo.pezzo as keyof typeof PezzoCodice]],
+      cattura: this.getPezzo(r, c) != null,
+      arrocco: false,
+      promozione: false
+    };
+
+    // 🔹 Usa `id` della partita, non gameStateId
+    if (!this.partita?.id) {
+      console.error('⚠️ ID partita mancante.');
+      return;
+    }
+
+    console.log('➡️ Invio mossa con ID partita:', this.partita.id);
+    console.log('Mossa:', mossa);
+
+    this.partitaService.eseguiMossa(this.partita.id, mossa).subscribe({
+      next: (stato: ScacchieraGameStateDTO) => {
+        this.scacchiera = stato.scacchiera.map(riga =>
+          riga.map(cella =>
+            cella ? { pezzo: cella.pezzo as Pezzo['pezzo'], colorePezzo: cella.colorePezzo as 'BIANCO' | 'NERO' } : null
+          )
+        );
+        this.selectedPezzo = null;
+      },
+      error: err => {
+        console.error('Errore nella mossa:', err);
+        this.selectedPezzo = null;
+      }
+    });
   }
 
   getColorePezzo(pezzo: Pezzo){
