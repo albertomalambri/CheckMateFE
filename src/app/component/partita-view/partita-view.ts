@@ -143,7 +143,7 @@ export class PartitaViewComponent implements OnInit {
       numero: 0,
       da: `${this.selectedPezzo.r}${this.selectedPezzo.c}`,
       a: `${r}${c}`,
-      pezzo: CodiceToBackendPezzo[PezzoCodice[pezzo.pezzo as keyof typeof PezzoCodice]],
+      pezzo: PezzoCodice[pezzo.pezzo as keyof typeof PezzoCodice],
       cattura: this.getPezzo(r, c) != null,
       arrocco: false,
       promozione: false
@@ -160,11 +160,7 @@ export class PartitaViewComponent implements OnInit {
 
     this.partitaService.eseguiMossa(this.partita.id, mossa).subscribe({
       next: (stato: ScacchieraGameStateDTO) => {
-        this.scacchiera = stato.scacchiera.map(riga =>
-          riga.map(cella =>
-            cella ? { pezzo: cella.pezzo as Pezzo['pezzo'], colorePezzo: cella.colorePezzo as 'BIANCO' | 'NERO' } : null
-          )
-        );
+        this.scacchiera = this.convertiScacchiera(stato.scacchiera)
         this.selectedPezzo = null;
       },
       error: err => {
@@ -179,6 +175,14 @@ export class PartitaViewComponent implements OnInit {
       return "white"
     }
     return "black"
+  }
+
+  convertiScacchiera(scacchiera: any[]): any[][] {
+    const righe: any[][] = [];
+    for (let i = 0; i < 8; i++) {
+      righe.push(scacchiera.slice(i * 8, (i + 1) * 8));
+    }
+    return righe;
   }
 }
 

@@ -19,10 +19,12 @@ export interface cellaDTO{
   nomeCasella: string;
 }
 export interface ScacchieraGameStateDTO {
+  id:number;
   scacchiera: cellaDTO[][];
   currentPlayer: string;
-  status: string;
-  lastMove: Mossa;
+  isCheck:boolean;
+  isCheckMate:boolean;
+  isStallo : boolean;
 }
 export interface Partita
 {
