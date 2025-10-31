@@ -4,5 +4,15 @@
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
+  },
+  "/chessnews": {
+    "target": "https://www.chess.com",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/chessnews": ""
+    },
+    "logLevel": "debug"
   }
 }
+

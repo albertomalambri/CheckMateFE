@@ -13,7 +13,16 @@ import {Messages} from './service/Messages';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Navbar, RouterOutlet, RouterModule, PartitaViewComponent, Navbar2, NgIf, UserCard, CommonModule, Strategy],
+  imports: [
+    Navbar,
+    RouterOutlet,
+    RouterModule,
+    PartitaViewComponent,
+    Navbar2,
+    NgIf,
+    UserCard,
+    CommonModule,
+    Strategy],
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
