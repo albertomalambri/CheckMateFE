@@ -72,6 +72,63 @@
 .hidden {
   display: none;
 }
+.message-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255, 165, 0, 0.2);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.title {
+  text-align: center;
+  color: #ff6600;
+  margin-bottom: 2rem;
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.message-card {
+  border: 1px solid #ffcc99;
+  border-left: 6px solid #ff6600;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #fffaf2;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.message-header h2 {
+  margin: 0;
+  color: #ff6600;
+}
+
+.timestamp {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.content {
+  margin: 1rem 0;
+  font-size: 1.1rem;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #555;
+}
 
 
 

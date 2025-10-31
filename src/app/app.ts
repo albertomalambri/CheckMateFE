@@ -6,6 +6,7 @@ import {PartitaViewComponent} from './component/partita-view/partita-view';
 import {CommonModule, NgIf} from '@angular/common';
 import {UserCard} from './component/user-card/user-card';
 import {Strategy} from './component/strategy/strategy';
+import {Messages} from './service/Messages';
 
 
 
@@ -24,5 +25,10 @@ export class AppComponent {
   ngOnInit() {
     // simulazione caricamento 3 secondi
     setTimeout(() => this.isLoading = false, 3000);
+  }
+
+  constructor(public messaggiServ:Messages)
+  {
+
   }
 }
