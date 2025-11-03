@@ -11,6 +11,8 @@ import { TorreComponent } from '../pieces/torre/torre.component';
 import {Pezzo, PezzoCodice} from '../../model/pezzo.model';
 import {cellaDTO} from '../../model/partita.model';
 import{ScacchieraGameStateDTO} from '../../model/partita.model';
+import{PromotionDropdown} from '../promotion-dropdown/promotion-dropdown';
+import {FormsModule} from '@angular/forms';
 
 const CodiceToBackendPezzo: Record<PezzoCodice, string> = {
   PE: 'pedone',
@@ -31,7 +33,8 @@ const CodiceToBackendPezzo: Record<PezzoCodice, string> = {
     PedoneComponent,
     ReComponent,
     ReginaComponent,
-    TorreComponent
+    TorreComponent,
+    FormsModule
   ],
   templateUrl: './partita-view.html',
   styleUrls: ['./partita-view.css']
@@ -55,6 +58,9 @@ export class PartitaViewComponent implements OnInit {
   colonne: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
   gameStarted: boolean = false;
   loading: boolean = false;
+  showPromozioneDropdown: boolean = false;
+  promozioneDestinazione: { r: number, c: string } | null = null;
+  pezzoPromozione: string = 'Q'; // default: donna
 
   constructor(private partitaService: PartitaService) {}
 
@@ -133,42 +139,22 @@ export class PartitaViewComponent implements OnInit {
   }
 
   dropPezzo(event: DragEvent, r: number, c: string) {
-    event.preventDefault();
-    if (!this.selectedPezzo) return;
 
-    const pezzo = this.getPezzo(this.selectedPezzo.r, this.selectedPezzo.c);
-    if (!pezzo) return;
+      event.preventDefault();
+      if (!this.selectedPezzo) return;
 
-    const mossa: Mossa = {
-      numero: 0,
-      da: `${this.selectedPezzo.r}${this.selectedPezzo.c}`,
-      a: `${r}${c}`,
-      pezzo: PezzoCodice[pezzo.pezzo as keyof typeof PezzoCodice],
-      cattura: this.getPezzo(r, c) != null,
-      arrocco: false,
-      promozione: false
-    };
+      const pezzo = this.getPezzo(this.selectedPezzo.r, this.selectedPezzo.c);
+      if (!pezzo) return;
 
-    // 🔹 Usa `id` della partita, non gameStateId
-    if (!this.partita?.id) {
-      console.error('⚠️ ID partita mancante.');
-      return;
-    }
-
-    console.log('➡️ Invio mossa con ID partita:', this.partita.id);
-    console.log('Mossa:', mossa);
-
-    this.partitaService.eseguiMossa(this.partita.id, mossa).subscribe({
-      next: (stato: ScacchieraGameStateDTO) => {
-        this.scacchiera = this.convertiScacchiera(stato.scacchiera)
-        this.selectedPezzo = null;
-      },
-      error: err => {
-        console.error('Errore nella mossa:', err);
-        this.selectedPezzo = null;
+      if (this.isPromotion(pezzo, r)) {
+        this.promozioneDestinazione = { r, c };
+        this.showPromozioneDropdown = true;
+        return;
       }
-    });
+
+      this.inviaMossa(r, c, pezzo.pezzo, false);
   }
+
 
   getColorePezzo(pezzo: Pezzo){
     if(pezzo.colorePezzo == "BIANCO"){
@@ -184,5 +170,59 @@ export class PartitaViewComponent implements OnInit {
     }
     return righe;
   }
+  inviaMossa(r: number, c: string, pezzo: string, promozione: boolean) {
+    if (!this.selectedPezzo) return;
+    const mossa: Mossa = {
+      numero: 0,
+      da: `${this.selectedPezzo.r}${this.selectedPezzo.c}`,
+      a: `${r}${c}`,
+      pezzo: PezzoCodice[pezzo as keyof typeof PezzoCodice],
+      cattura: this.getPezzo(r, c) != null,
+      arrocco: false,
+      promozione: promozione,
+    };
+
+    if (!this.partita?.id) {
+      console.error('⚠️ ID partita mancante.');
+      return;
+    }
+
+    console.log('➡️ Invio mossa con ID partita:', this.partita.id);
+    console.log('Mossa:', mossa);
+
+    this.partitaService.eseguiMossa(this.partita.id, mossa).subscribe({
+      next: (stato: ScacchieraGameStateDTO) => {
+        this.scacchiera = this.convertiScacchiera(stato.scacchiera);
+        this.selectedPezzo = null;
+        this.promozioneDestinazione = null;
+        this.showPromozioneDropdown = false;
+        this.pezzoPromozione = 'DONNA'; // reset
+      },
+      error: err => {
+        console.error('Errore nella mossa:', err);
+        this.selectedPezzo = null;
+        this.promozioneDestinazione = null;
+        this.showPromozioneDropdown = false;
+        this.pezzoPromozione = 'DONNA';
+      }
+    });
+  }
+  isPromotion(pezzo:Pezzo, r:number): boolean{
+
+    if(pezzo.pezzo=="PEDONE" && pezzo.colorePezzo =="BIANCO" && r == 8){
+      return true;
+    }
+    if(pezzo.pezzo=="PEDONE" && pezzo.colorePezzo =="NERO" && r == 1){
+      return true
+    }
+    return false;
+  }
+  confermaPromozione() {
+    if (!this.promozioneDestinazione || !this.selectedPezzo) return;
+
+    const { r, c } = this.promozioneDestinazione;
+    this.inviaMossa(r, c, this.pezzoPromozione, true);
+  }
+
 }
 

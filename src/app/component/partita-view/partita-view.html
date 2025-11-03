@@ -99,6 +99,14 @@
                   }
                 }
               }
+              @if (showPromozioneDropdown && promozioneDestinazione?.r === r && promozioneDestinazione?.c === c) {
+                <select [(ngModel)]="pezzoPromozione" (change)="confermaPromozione()" class="promozione-select">
+                  <option value="DONNA">Donna ♕</option>
+                  <option value="TORRE">Torre ♖</option>
+                  <option value="ALFIERE">Alfiere ♗</option>
+                  <option value="CAVALLO">Cavallo ♘</option>
+                </select>
+              }
             </div>
           }
         }
