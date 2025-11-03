@@ -31,104 +31,97 @@
 </div>
 -->
 
+  <!--Controlli -->
+  <div class="controls">
+    <button (click)="startGame()" [disabled]="gameStarted || loading">Inizia Partita</button>
+  </div>
 
-<!--Controlli -->
-<div class="controls">
-  <button (click)="startGame()" [disabled]="gameStarted || loading">Inizia Partita</button>
-</div>
-
-<!--Scacchiera -->
-<div class="scacchiera-wrapper">
-  @if (!loading)
-  {
-    <div class="scacchiera">
-      @for (r of righe; track $index)
-      {
-        @for (c of colonne; track $index)
+  <!--Scacchiera -->
+  <div class="scacchiera-wrapper">
+    @if (!loading)
+    {
+      <div class="scacchiera">
+        @for (r of righe; track $index)
         {
-          <div class="cella"
-               [class.bianca]="isBianca(r, c)"
-               [class.nera]="!isBianca(r, c)"
-               (drop)="dropPezzo($event, r, c)"
-               (dragover)="allowDrop($event)">
+          @for (c of colonne; track $index)
+          {
+            <div class="cella"
+                 [class.bianca]="isBianca(r, c)"
+                 [class.nera]="!isBianca(r, c)"
+                 (drop)="dropPezzo($event, r, c)"
+                 (dragover)="allowDrop($event)">
 
-            @if (getPezzo(r, c))
-            {
-              @switch (getPezzo(r, c)!.pezzo.toLowerCase())
+              @if (getPezzo(r, c))
               {
-                @case('pedone')
+                @switch (getPezzo(r, c)!.pezzo.toLowerCase())
                 {
-                  <app-pedone [color]="getColorePezzo(getPezzo(r,c)!)"
-                              draggable="true"
-                              (dragstart)="pickPezzo($event, r, c)">
-                  </app-pedone>
-                }
-                @case('torre')
-                {
-                  <app-torre [color]="getColorePezzo(getPezzo(r,c)!)"
-                             draggable="true"
-                             (dragstart)="pickPezzo($event, r, c)">
-                  </app-torre>
-                }
-                @case('cavallo')
-                {
-                  <app-cavallo [color]="getColorePezzo(getPezzo(r,c)!)"
+                  @case('pedone')
+                  {
+                    <app-pedone [color]="getColorePezzo(getPezzo(r,c)!)"
+                                draggable="true"
+                                (dragstart)="pickPezzo($event, r, c)">
+                    </app-pedone>
+                  }
+                  @case('torre')
+                  {
+                    <app-torre [color]="getColorePezzo(getPezzo(r,c)!)"
                                draggable="true"
                                (dragstart)="pickPezzo($event, r, c)">
-                  </app-cavallo>
-                }
-                @case('alfiere')
-                {
-                  <app-alfiere [color]="getColorePezzo(getPezzo(r,c)!)"
-                               draggable="true"
-                               (dragstart)="pickPezzo($event, r, c)">
-                  </app-alfiere>
-                }
-                @case('regina')
-                {
-                  <app-regina [color]="getColorePezzo(getPezzo(r,c)!)"
-                              draggable="true"
-                              (dragstart)="pickPezzo($event, r, c)">
-                  </app-regina>
-                }
-                @case('re')
-                {
-                  <app-re [color]="getColorePezzo(getPezzo(r,c)!)"
-                          draggable="true"
-                          (dragstart)="pickPezzo($event, r, c)">
-                  </app-re>
+                    </app-torre>
+                  }
+                  @case('cavallo')
+                  {
+                    <app-cavallo [color]="getColorePezzo(getPezzo(r,c)!)"
+                                 draggable="true"
+                                 (dragstart)="pickPezzo($event, r, c)">
+                    </app-cavallo>
+                  }
+                  @case('alfiere')
+                  {
+                    <app-alfiere [color]="getColorePezzo(getPezzo(r,c)!)"
+                                 draggable="true"
+                                 (dragstart)="pickPezzo($event, r, c)">
+                    </app-alfiere>
+                  }
+                  @case('regina')
+                  {
+                    <app-regina [color]="getColorePezzo(getPezzo(r,c)!)"
+                                draggable="true"
+                                (dragstart)="pickPezzo($event, r, c)">
+                    </app-regina>
+                  }
+                  @case('re')
+                  {
+                    <app-re [color]="getColorePezzo(getPezzo(r,c)!)"
+                            draggable="true"
+                            (dragstart)="pickPezzo($event, r, c)">
+                    </app-re>
+                  }
                 }
               }
-            }
-          </div>
+            </div>
+          }
         }
-      }
-    </div>
+      </div>
 
 
-  } @else {
-    <p>Caricamento partita in corso...</p>
-  }
-</div>
+    } @else {
+      <div class="spinner" *ngIf="loading"></div>
+    }
 
-<!--
-<div class="chat-box" id="chatBox">
-  <div class="chat-header">
-    <h3>Chat Partita</h3>
   </div>
 
-  <div class="chat-messages" id="chatMessages">
-    <div class="message received">
-      <span class="author">PawnMaster:</span> Buona fortuna!
-    </div>
-  </div>
 
-  <div class="chat-input">
-    <input type="text" id="chatInput" placeholder="Scrivi un messaggio..." />
-    <button id="sendBtn">Invia</button>
-  </div>
-</div>
--->
+
+
+
+
+
+
+
+
+
+
 
 
 
