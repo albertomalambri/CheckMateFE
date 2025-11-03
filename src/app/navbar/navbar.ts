@@ -13,6 +13,11 @@ import {CommonModule} from '@angular/common';
   styleUrls: ['./navbar.css']
 })
 export class Navbar {
+  sidebarOpen = false;
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
 
 }
 

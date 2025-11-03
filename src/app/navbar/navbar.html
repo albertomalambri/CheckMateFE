@@ -1,7 +1,9 @@
+<!--
+
 <nav>
   <ul>
 
-    <li>
+    <li routerLink="news" routerLinkActive="active">
       <div class="home-icon">
         <div class="roof">
           <div class="roof-edge"></div>
@@ -10,7 +12,7 @@
       </div>
     </li>
 
-    <li>
+    <li routerLink="partite" routerLinkActive="active">
       <div class="about-icon">
         <div class="head">
           <div class="eyes"></div>
@@ -19,7 +21,7 @@
       </div>
     </li>
 
-    <li>
+    <li routerLink="/news" routerLinkActive="active">
       <div class="work-icon">
         <div class="paper"></div>
         <div class="lines"></div>
@@ -28,7 +30,7 @@
       </div>
     </li>
 
-    <li>
+    <li routerLink="/strategy" routerLinkActive="active">
       <div class="mail-icon">
         <div class="mail-base">
           <div class="mail-top"></div>
@@ -38,4 +40,48 @@
 
   </ul>
 </nav>
+
+-->
+<link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.4.3/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-oMIIhJL1T5s+PxJr6+Qb0pO1IRFB6OGMM+J57UBT3UQKxSVsb++MkXpu9cLqaJxu" crossorigin="anonymous">
+
+<div class="sidebar sidebar-narrow-unfoldable border-end">
+  <div class="sidebar-header border-bottom">
+    <div class="sidebar-brand">CUI</div>
+  </div>
+  <ul class="sidebar-nav">
+    <li class="nav-title">CheckMate</li>
+    <li class="nav-item">
+      <a class="nav-link" href="/homepage">
+        <i class="nav-icon cil-speedometer"></i> Homepage
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/partite">
+        <i class="nav-icon cil-speedometer"></i> Partita
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/strategy">
+        <i class="nav-icon cil-speedometer"></i> Strategie
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/news">
+        <i class="nav-icon cil-speedometer"></i> News
+        <span class="badge bg-primary ms-auto">NEW</span>
+      </a>
+    </li>
+
+    <li class="nav-item mt-auto">
+      <a class="nav-link" href="">
+        <i class="nav-icon cil-cloud-download"></i> About us</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="">
+        <i class="nav-icon cil-layers"></i> Try ProCheckMate
+        <strong>PRO</strong>
+      </a>
+    </li>
+  </ul>
+</div>
 

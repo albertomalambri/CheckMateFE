@@ -38,6 +38,11 @@ export class AppComponent {
 
   constructor(public messaggiServ:Messages)
   {
+  }
 
+  sidebarOpen = false;
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
   }
 }

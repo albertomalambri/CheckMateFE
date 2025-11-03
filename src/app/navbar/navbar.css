@@ -1,3 +1,5 @@
+/*
+
 *,*:before,*:after {
   box-sizing: border-box;
 }
@@ -124,7 +126,7 @@ nav ul li div { position: relative; }
   border-width: 0 17px 12px 17px;
   border-color: transparent transparent orange transparent;
 }
-/*white triangle over red triangle*/
+
 .roof-edge:after {
   position: absolute;
   left: -14.5px;
@@ -144,7 +146,7 @@ nav ul li div { position: relative; }
   margin: 0 auto;
   background: white;
 }
-/*door*/
+
 .front:after {
   position: absolute;
   background: orange;
@@ -154,7 +156,7 @@ nav ul li div { position: relative; }
   left:9px;
 }
 
-/*/// About me ////*/
+
 
 .head {
   width: 32px;
@@ -162,7 +164,7 @@ nav ul li div { position: relative; }
   background: white;
   border-radius:8px;
 }
-/*mouth*/
+
 .head:after {
   width: 4px;
   height: 10px;
@@ -183,7 +185,7 @@ nav ul li div { position: relative; }
   left: 5px;
   background: orange;
 }
-/*right eye*/
+
 .eyes:after {
   width: 8px;
   height: 5px;
@@ -204,7 +206,7 @@ nav ul li div { position: relative; }
   left: 0;
   border-radius:0 0 8px 8px;
 }
-/*nose*/
+
 .beard:after {
   position: absolute;
   top:-2px;
@@ -216,7 +218,7 @@ nav ul li div { position: relative; }
   border-right:1px solid orange;
 }
 
-/*//work//*/
+
 
 .paper {
   position: relative;
@@ -226,7 +228,7 @@ nav ul li div { position: relative; }
   border:2px solid white;
 }
 
-/*window*/
+
 .paper:after {
   position: absolute;
   top:1px;
@@ -278,7 +280,7 @@ nav ul li div { position: relative; }
   display: none;
 }
 
-/*//mail //*/
+
 
 .mail-base {
   position: relative;
@@ -311,6 +313,80 @@ nav ul li div { position: relative; }
   border-width: 0 16px 9px 16px;
   border-color: transparent transparent white transparent;
 }
+
+*/
+
+/* ======== SIDEBAR BASE ======== */
+.sidebar {
+  background: linear-gradient(180deg, #f57c00 0%, #757575 100%); /* arancio → grigio */
+  color: #fff;
+  border-right: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+
+/* ======== HEADER ======== */
+.sidebar-header {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+
+/* ======== NAVIGATION TITLES ======== */
+.nav-title {
+  color: rgba(255,255,255,0.7);
+}
+
+/* ======== NAV ITEMS ======== */
+.nav-link {
+  color: #fff;
+  border-left: 3px solid transparent;
+  transition: all 0.25s ease;
+}
+
+.nav-link i {
+  color: rgba(255,255,255,0.8);
+  transition: color 0.25s ease;
+}
+
+.nav-link:hover {
+  background: rgba(255,255,255,0.15);
+  border-left-color: #ffb74d;
+  color: #fff;
+}
+
+.nav-link:hover i {
+  color: #ffcc80;
+}
+
+.nav-link.active {
+  background: rgba(255,255,255,0.25);
+  border-left-color: #ff9800;
+}
+
+/* ======== BADGE ======== */
+.badge {
+  background-color: #ffb74d !important;
+  color: #212121;
+}
+
+/* ======== DROPDOWN ======== */
+.nav-group-toggle::after {
+  color: rgba(255,255,255,0.7);
+}
+
+.nav-group.show > .nav-link.nav-group-toggle::after {
+  transform: rotate(180deg);
+}
+
+.nav-group-items {
+  background: rgba(255,255,255,0.1);
+}
+
+/* ======== SCROLLBAR ======== */
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3);
+}
+
 
 
 

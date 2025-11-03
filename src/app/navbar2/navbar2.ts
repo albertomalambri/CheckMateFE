@@ -7,6 +7,7 @@ import {User} from '../model/user.model';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 
 
+
 @Component({
   selector: 'app-navbar2',
   templateUrl: './navbar2.html',
@@ -14,7 +15,6 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
     FormsModule,
     CommonModule,
     RouterLink,
-    RouterLinkActive
   ],
   styleUrls: ['./navbar2.css']
 })
@@ -104,6 +104,7 @@ export class Navbar2 {
   }
 
   logout() {
+    this.authService.logout();
     this.authService.setUser(null);
     this.isLoggedIn = false;
     this.username = '';
