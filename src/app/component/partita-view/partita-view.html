@@ -31,85 +31,59 @@
 </div>
 -->
 
-  <!--Controlli -->
+@if (!gameStarted) {
   <div class="controls">
-    <button (click)="startGame()" [disabled]="gameStarted || loading">Inizia Partita</button>
+    <button class="start-btn" (click)="startGame()" [disabled]="gameStarted || loading">
+      ♟️ Inizia Partita
+    </button>
   </div>
+} @else {
+  <div class="scacchiera-container">
+    <!-- Etichette colonne (sopra) -->
+    <div class="col-labels top">
+      <div *ngFor="let c of colonne" class="col-label">{{ c.toUpperCase() }}</div>
+    </div>
 
-  <!--Scacchiera -->
-  <div class="scacchiera-wrapper">
-    @if (!loading)
-    {
-      <div class="scacchiera">
-        @for (r of righe; track $index)
-        {
-          @for (c of colonne; track $index)
-          {
-            <div class="cella"
-                 [class.bianca]="isBianca(r, c)"
-                 [class.nera]="!isBianca(r, c)"
-                 (drop)="dropPezzo($event, r, c)"
-                 (dragover)="allowDrop($event)">
+    <div class="scacchiera-righe">
+      @for (r of righe; track $index) {
+        <div class="riga">
+          <!-- Etichetta numerica a sinistra -->
+          <div class="row-label">{{ r }}</div>
 
-              @if (getPezzo(r, c))
-              {
-                @switch (getPezzo(r, c)!.pezzo.toLowerCase())
-                {
-                  @case('pedone')
-                  {
-                    <app-pedone [color]="getColorePezzo(getPezzo(r,c)!)"
-                                draggable="true"
-                                (dragstart)="pickPezzo($event, r, c)">
-                    </app-pedone>
-                  }
-                  @case('torre')
-                  {
-                    <app-torre [color]="getColorePezzo(getPezzo(r,c)!)"
-                               draggable="true"
-                               (dragstart)="pickPezzo($event, r, c)">
-                    </app-torre>
-                  }
-                  @case('cavallo')
-                  {
-                    <app-cavallo [color]="getColorePezzo(getPezzo(r,c)!)"
-                                 draggable="true"
-                                 (dragstart)="pickPezzo($event, r, c)">
-                    </app-cavallo>
-                  }
-                  @case('alfiere')
-                  {
-                    <app-alfiere [color]="getColorePezzo(getPezzo(r,c)!)"
-                                 draggable="true"
-                                 (dragstart)="pickPezzo($event, r, c)">
-                    </app-alfiere>
-                  }
-                  @case('regina')
-                  {
-                    <app-regina [color]="getColorePezzo(getPezzo(r,c)!)"
-                                draggable="true"
-                                (dragstart)="pickPezzo($event, r, c)">
-                    </app-regina>
-                  }
-                  @case('re')
-                  {
-                    <app-re [color]="getColorePezzo(getPezzo(r,c)!)"
-                            draggable="true"
-                            (dragstart)="pickPezzo($event, r, c)">
-                    </app-re>
+          <!-- Riga di celle -->
+          <div class="scacchiera-row">
+            @for (c of colonne; track $index) {
+              <div class="cella"
+                   [class.bianca]="isBianca(r, c)"
+                   [class.nera]="!isBianca(r, c)"
+                   (drop)="dropPezzo($event, r, c)"
+                   (dragover)="allowDrop($event)">
+                @if (getPezzo(r, c)) {
+                  @switch (getPezzo(r, c)!.pezzo.toLowerCase()) {
+                    @case('pedone')   { <app-pedone [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-pedone> }
+                    @case('torre')    { <app-torre [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-torre> }
+                    @case('cavallo')  { <app-cavallo [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-cavallo> }
+                    @case('alfiere')  { <app-alfiere [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-alfiere> }
+                    @case('regina')   { <app-regina [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-regina> }
+                    @case('re')       { <app-re [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-re> }
                   }
                 }
-              }
-            </div>
-          }
-        }
-      </div>
+              </div>
+            }
+          </div>
 
+          <!-- Etichetta numerica a destra -->
+          <div class="row-label">{{ r }}</div>
+        </div>
+      }
+    </div>
 
-    } @else {
-      <div class="spinner" *ngIf="loading"></div>
-    }
-
+    <!-- Etichette colonne (sotto) -->
+    <div class="col-labels bottom">
+      <div *ngFor="let c of colonne" class="col-label">{{ c.toUpperCase() }}</div>
+    </div>
   </div>
+}
 
 
 
