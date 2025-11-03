@@ -104,6 +104,7 @@ export class Navbar2 {
   }
 
   logout() {
+    this.authService.logout();
     this.authService.setUser(null);
     this.isLoggedIn = false;
     this.username = '';

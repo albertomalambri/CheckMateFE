@@ -19,7 +19,7 @@ export interface User {
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8080/api/auth'; //
+  private apiUrl = '/api/auth'; //
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
@@ -59,9 +59,14 @@ export class AuthService {
 
   // ================= LOGOUT =================
   logout(): void {
-    localStorage.removeItem('user');
-    this.currentUserSubject.next(null); // <- questo è fondamentale
+    this.http.post('/api/auth/logout', {}, { withCredentials: true })
+      .subscribe(() => {
+        document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        localStorage.removeItem('user');
+        this.currentUserSubject.next(null);
+      });
   }
+
 
   // ================= GET CURRENT USER =================
   get currentUser(): User | null {
