@@ -88,10 +88,13 @@ export class PartitaViewComponent implements OnInit {
 
   startGame(): void {
     this.loading = true;
+    const audio = new Audio('chess-pieces-hitting-wooden-board-99336_vlXIuPS5.mp3'); // piccolo suono finto
+    audio.play().catch(() => {});
     this.partitaService.getPartita().subscribe({
       next: (partita) => {
         this.partita = partita;
         this.loading = false;
+        this.gameStarted = true;
         console.log('✅ Partita creata:', this.partita);
       },
       error: (err) => {
@@ -139,12 +142,11 @@ export class PartitaViewComponent implements OnInit {
   }
 
   dropPezzo(event: DragEvent, r: number, c: string) {
+    event.preventDefault();
+    if (!this.selectedPezzo) return;
 
-      event.preventDefault();
-      if (!this.selectedPezzo) return;
-
-      const pezzo = this.getPezzo(this.selectedPezzo.r, this.selectedPezzo.c);
-      if (!pezzo) return;
+    const pezzo = this.getPezzo(this.selectedPezzo.r, this.selectedPezzo.c);
+    if (!pezzo) return;
 
       if (this.isPromotion(pezzo, r)) {
         this.promozioneDestinazione = { r, c };
@@ -182,6 +184,7 @@ export class PartitaViewComponent implements OnInit {
       promozione: promozione,
     };
 
+    // 🔹 Usa `id` della partita, non gameStateId
     if (!this.partita?.id) {
       console.error('⚠️ ID partita mancante.');
       return;
@@ -197,6 +200,27 @@ export class PartitaViewComponent implements OnInit {
         this.promozioneDestinazione = null;
         this.showPromozioneDropdown = false;
         this.pezzoPromozione = 'DONNA'; // reset
+        // ✅ Qui puoi controllare lo stato della partita
+        if (stato.isCheckMate) {
+          const audio = new Audio('11l-victory_trumpet-1749704501065-358769.mp3'); // piccolo suono finto
+          audio.play().catch(() => {});
+          this.partitaService.finePartita(this.partita.id);
+          // (opzionale: salva risultato o blocca altre mosse)
+        }
+        else if (stato.isStallo) {
+          const audio = new Audio('boo-36556.mp3'); // piccolo suono finto
+          audio.play().catch(() => {});
+          this.partitaService.finePartita(this.partita.id);
+        }
+        else if (stato.isCheck) {
+          const audio = new Audio('11l-victory_trumpet-1749704463122-358787.mp3'); // piccolo suono finto
+          audio.play().catch(() => {});
+        }
+        else {
+          const audio = new Audio('ficha-de-ajedrez-34722.mp3'); // piccolo suono finto
+          audio.play().catch(() => {
+          });
+        }
       },
       error: err => {
         console.error('Errore nella mossa:', err);
@@ -222,6 +246,16 @@ export class PartitaViewComponent implements OnInit {
 
     const { r, c } = this.promozioneDestinazione;
     this.inviaMossa(r, c, this.pezzoPromozione, true);
+  }
+
+  riproduciSuono(file: string) {
+    const audio = new Audio();
+    audio.src = `${file}`;
+    audio.load();
+    audio.volume = 1.0; // facoltativo
+    audio.play().catch(err => {
+      console.warn('⚠️ Impossibile riprodurre il suono:', err);
+    });
   }
 
 }
