@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 120px 20px;
+  padding: 120px 185px;
   min-height: 100vh;
   overflow: hidden;
   color: #fff;
@@ -33,7 +33,7 @@
   align-self: flex-start;
   justify-content: flex-start;
   height: 100%;
-  width: 1450px;
+  width: 1306px;
   overflow: hidden;
   border-radius: 25px 25px 25px 25px;
   margin-left: 80px;
@@ -408,9 +408,9 @@
 .recent-matches {
   position: absolute;
   top: 475px;
-  right: 160px;
-  width: 1040px;
-  left: 510px;
+  right: 200px;
+  width: 900px;
+  left: 670px;
 
 
   background: rgba(255, 255, 255, 0.05);
@@ -481,6 +481,26 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+
+
+
+
+/* contenuto principale */
+.main-content {
+  transition: transform 0.4s ease, filter 0.3s ease;
+  transform: translateX(0);
+}
+
+/* quando la sidebar è aperta */
+.main-content.shifted {
+  transform: translateX(260px); /* la stessa larghezza della sidebar */
+  filter: blur(2px); /* opzionale: aggiunge un leggero blur */
+}
+
+/* se vuoi disattivare lo scroll dietro quando la sidebar è aperta */
+body.sidebar-open {
+  overflow: hidden;
+}
 
 
 

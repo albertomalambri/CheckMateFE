@@ -6,7 +6,8 @@ import {PartitaViewComponent} from './component/partita-view/partita-view';
 import {CommonModule, NgIf} from '@angular/common';
 import {UserCard} from './component/user-card/user-card';
 import {Strategy} from './component/strategy/strategy';
-import {Messages} from './service/Messages';
+import {MessagesService} from './service/Message.service';
+import {Emails} from './component/emails/emails';
 
 
 
@@ -22,7 +23,9 @@ import {Messages} from './service/Messages';
     NgIf,
     UserCard,
     CommonModule,
-    Strategy],
+    Strategy,
+    Emails
+  ],
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -36,8 +39,14 @@ export class AppComponent {
     setTimeout(() => this.isLoading = false, 3000);
   }
 
-  constructor(public messaggiServ:Messages)
+  constructor(public messaggiServ:MessagesService)
   {
 
+  }
+
+  sidebarOpen = false;
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
   }
 }

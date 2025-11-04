@@ -1,7 +1,9 @@
+<!--
+
 <nav>
   <ul>
 
-    <li>
+    <li routerLink="news" routerLinkActive="active">
       <div class="home-icon">
         <div class="roof">
           <div class="roof-edge"></div>
@@ -10,7 +12,7 @@
       </div>
     </li>
 
-    <li>
+    <li routerLink="partite" routerLinkActive="active">
       <div class="about-icon">
         <div class="head">
           <div class="eyes"></div>
@@ -19,7 +21,7 @@
       </div>
     </li>
 
-    <li>
+    <li routerLink="/news" routerLinkActive="active">
       <div class="work-icon">
         <div class="paper"></div>
         <div class="lines"></div>
@@ -28,7 +30,7 @@
       </div>
     </li>
 
-    <li>
+    <li routerLink="/strategy" routerLinkActive="active">
       <div class="mail-icon">
         <div class="mail-base">
           <div class="mail-top"></div>
@@ -38,4 +40,64 @@
 
   </ul>
 </nav>
+
+-->
+<link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.4.3/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-oMIIhJL1T5s+PxJr6+Qb0pO1IRFB6OGMM+J57UBT3UQKxSVsb++MkXpu9cLqaJxu" crossorigin="anonymous">
+
+<div class="sidebar sidebar-narrow-unfoldable border-end">
+  <div class="sidebar-header border-bottom">
+    <div class="sidebar-brand">CUI</div>
+  </div>
+  <ul class="sidebar-nav">
+
+
+    <li class="nav-title">CheckMate</li>
+
+
+    <li class="nav-item">
+      <a class="nav-link" href="/partite">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M232 120L232 160L153.9 160C139.6 160 128 171.6 128 185.9C128 189.9 128.9 193.9 130.7 197.5L164.1 264.3C152.7 266.1 143.9 276 143.9 288C143.9 301.3 154.6 312 167.9 312L173.5 312L159.9 448L103.7 518.3C98.7 524.6 95.9 532.4 95.9 540.5C95.9 560.1 111.8 576 131.4 576L380.3 576C399.9 576 415.8 560.1 415.8 540.5C415.8 532.4 413.1 524.6 408 518.3L352 448L338.4 312L344 312C357.3 312 368 301.3 368 288C368 276.1 359.3 266.1 347.8 264.3L381.2 197.5C383 193.9 383.9 189.9 383.9 185.9C383.9 171.6 372.3 160 358 160L279.9 160L279.9 120L295.9 120C309.2 120 319.9 109.3 319.9 96C319.9 82.7 309.3 72 296 72L280 72L280 56C280 42.7 269.3 32 256 32C242.7 32 232 42.7 232 56L232 72L216 72C202.7 72 192 82.7 192 96C192 109.3 202.7 120 216 120L232 120zM389.8 343.6L398.3 429.1L445.7 488.3L449.9 494C459.1 507.7 464 523.9 464 540.5C464 553.2 461.2 565.3 456.1 576L539.2 576C559.5 576 576 559.5 576 539.2C576 531.9 573.8 524.8 569.8 518.8L544 480.1L544 416.1L557.3 402.8C569.3 390.8 576 374.5 576 357.5L576 256C576 238.3 561.7 224 544 224C526.3 224 512 238.3 512 256L512 272L480 272L480 256C480 238.3 465.7 224 448 224C430.3 224 416 238.3 416 256L416 288C416 310.4 405.8 330.4 389.8 343.6z"/></svg>
+        Partita
+      </a>
+    </li>
+
+
+    <li class="nav-item">
+      <a class="nav-link" href="/strategie">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M420.9 448C428.2 425.7 442.8 405.5 459.3 388.1C492 353.7 512 307.2 512 256C512 150 426 64 320 64C214 64 128 150 128 256C128 307.2 148 353.7 180.7 388.1C197.2 405.5 211.9 425.7 219.1 448L420.8 448zM416 496L224 496L224 512C224 556.2 259.8 592 304 592L336 592C380.2 592 416 556.2 416 512L416 496zM312 176C272.2 176 240 208.2 240 248C240 261.3 229.3 272 216 272C202.7 272 192 261.3 192 248C192 181.7 245.7 128 312 128C325.3 128 336 138.7 336 152C336 165.3 325.3 176 312 176z"/></svg>
+        Strategie
+      </a>
+    </li>
+
+
+    <li class="nav-item">
+      <a class="nav-link" href="/news">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M320 64C302.3 64 288 78.3 288 96L288 99.2C215 114 160 178.6 160 256L160 277.7C160 325.8 143.6 372.5 113.6 410.1L103.8 422.3C98.7 428.6 96 436.4 96 444.5C96 464.1 111.9 480 131.5 480L508.4 480C528 480 543.9 464.1 543.9 444.5C543.9 436.4 541.2 428.6 536.1 422.3L526.3 410.1C496.4 372.5 480 325.8 480 277.7L480 256C480 178.6 425 114 352 99.2L352 96C352 78.3 337.7 64 320 64zM258 528C265.1 555.6 290.2 576 320 576C349.8 576 374.9 555.6 382 528L258 528z"/></svg>
+        News
+        <span class="badge bg-primary ms-auto">NEW</span>
+      </a>
+    </li>
+
+
+    <li class="nav-item">
+      <a class="nav-link" href="/email">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M64 416L64 192C64 139 107 96 160 96L480 96C533 96 576 139 576 192L576 416C576 469 533 512 480 512L360 512C354.8 512 349.8 513.7 345.6 516.8L230.4 603.2C226.2 606.3 221.2 608 216 608C202.7 608 192 597.3 192 584L192 512L160 512C107 512 64 469 64 416z"/></svg>
+        Emails
+        <span class="badge bg-primary ms-auto">NEW</span>
+      </a>
+    </li>
+
+
+    <li class="nav-item mt-auto">
+      <a class="nav-link" href="">
+        <i class="nav-icon cil-cloud-download"></i> About us</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="">
+        <i class="nav-icon cil-layers"></i> Try CheckMate
+        <strong>PRO</strong>
+      </a>
+    </li>
+  </ul>
+</div>
 

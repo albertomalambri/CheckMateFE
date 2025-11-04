@@ -23,4 +23,6 @@ export class Homepage {
   }
 
   isLoggedIn = true; // per ora simuliamo l'utente loggato
+
+
 }

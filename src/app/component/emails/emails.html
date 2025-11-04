@@ -1,0 +1,17 @@
+<div class="container">
+  <h2>Messaggi ricevuti</h2>
+
+  <button (click)="markAllRead()">Segna tutti come letti</button>
+
+  <ul>
+    @for (msg of messages; track msg.id) {
+      <li>
+        @if (!msg.read) {
+          <strong>[NUOVO]</strong>
+        }
+        {{ msg.content }}
+      </li>
+    }
+  </ul>
+</div>
+
