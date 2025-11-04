@@ -1,36 +1,5 @@
 <h1 class="titolo-partita">Partita di Scacchi</h1>
 
-
-<!--
-<div class="info-partita">
-  @if (!loading && partita) {
-    <p><strong>Giocatore Bianco:</strong> {{ partita.giocatoreBianco }}</p>
-    <p><strong>Giocatore Nero:</strong> {{ partita.giocatoreNero }}</p>
-    <p><strong>Risultato:</strong> {{ partita.risultato || 'In corso...' }}</p>
-    <p><strong>FEN finale:</strong> {{ partita.statoFinaleFEN || 'N/D' }}</p>
-
-    <h3>Mossa principale:</h3>
-    @if (partita?.mosse && partita.mosse.length > 0) {
-      <div class="mossa-principale">
-        <span class="numero-mossa">Mossa {{ partita.mosse[0].numero }}:</span>
-        <span class="descrizione-mossa">
-      {{ partita.mosse[0].pezzo }} da {{ partita.mosse[0].da }} a {{ partita.mosse[0].a }}
-    </span>
-        @if (partita.mosse[0].cattura) { <span class="tag-mossa cattura">Cattura</span> }
-        @if (partita.mosse[0].arrocco) { <span class="tag-mossa arrocco">Arrocco</span> }
-        @if (partita.mosse[0].promozione) { <span class="tag-mossa promozione">Promozione</span> }
-      </div>
-    } @else {
-      <p class="nessuna-mossa">Nessuna mossa disponibile.</p>
-    }
-
-  } @else {
-    <p class="loading">Caricamento partita in corso...</p>
-  }
-
-</div>
--->
-
 @if (!gameStarted) {
   <div class="controls">
     <button class="start-btn" (click)="startGame()" [disabled]="gameStarted || loading">
@@ -38,49 +7,68 @@
     </button>
   </div>
 } @else {
-  <div class="scacchiera-container">
-    <!-- Etichette colonne (sopra) -->
-    <div class="col-labels top">
-      <div *ngFor="let c of colonne" class="col-label">{{ c.toUpperCase() }}</div>
-    </div>
-
-    <div class="scacchiera-righe">
-      @for (r of righe; track $index) {
-        <div class="riga">
-          <!-- Etichetta numerica a sinistra -->
-          <div class="row-label">{{ r }}</div>
-
-          <!-- Riga di celle -->
-          <div class="scacchiera-row">
-            @for (c of colonne; track $index) {
-              <div class="cella"
-                   [class.bianca]="isBianca(r, c)"
-                   [class.nera]="!isBianca(r, c)"
-                   (drop)="dropPezzo($event, r, c)"
-                   (dragover)="allowDrop($event)">
-                @if (getPezzo(r, c)) {
-                  @switch (getPezzo(r, c)!.pezzo.toLowerCase()) {
-                    @case('pedone')   { <app-pedone [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-pedone> }
-                    @case('torre')    { <app-torre [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-torre> }
-                    @case('cavallo')  { <app-cavallo [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-cavallo> }
-                    @case('alfiere')  { <app-alfiere [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-alfiere> }
-                    @case('regina')   { <app-regina [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-regina> }
-                    @case('re')       { <app-re [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-re> }
-                  }
-                }
-              </div>
-            }
+  <div class="partita-layout">
+    <!-- 🧭 BOX MOSSE A SINISTRA -->
+    <div class="moves-box">
+      <h3>Mosse</h3>
+      <div class="moves-list">
+        <div *ngFor="let mossa of mosse; let i = index">
+          <div class="mossa-riga">
+            <span class="mossa-numero">{{ i + 1 }}.</span>
+            <span class="mossa-testo" [innerHTML]="mossa"></span>
           </div>
-
-          <!-- Etichetta numerica a destra -->
-          <div class="row-label">{{ r }}</div>
         </div>
-      }
+      </div>
     </div>
 
-    <!-- Etichette colonne (sotto) -->
-    <div class="col-labels bottom">
-      <div *ngFor="let c of colonne" class="col-label">{{ c.toUpperCase() }}</div>
+
+    <!-- ♟️ SCACCHIERA -->
+    <div class="scacchiera-container">
+      <!-- Etichette colonne (sopra) -->
+      <div class="col-labels top">
+        <div *ngFor="let c of colonne" class="col-label">{{ c.toUpperCase() }}</div>
+      </div>
+
+      <div class="scacchiera-righe">
+        @for (r of righe; track $index) {
+          <div class="riga">
+            <div class="row-label">{{ r }}</div>
+            <div class="scacchiera-row">
+              @for (c of colonne; track $index) {
+                <div class="cella"
+                     [class.bianca]="isBianca(r, c)"
+                     [class.nera]="!isBianca(r, c)"
+                     (drop)="dropPezzo($event, r, c)"
+                     (dragover)="allowDrop($event)">
+                  @if (getPezzo(r, c)) {
+                    @switch (getPezzo(r, c)!.pezzo.toLowerCase()) {
+                      @case('pedone')   { <app-pedone [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-pedone> }
+                      @case('torre')    { <app-torre [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-torre> }
+                      @case('cavallo')  { <app-cavallo [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-cavallo> }
+                      @case('alfiere')  { <app-alfiere [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-alfiere> }
+                      @case('regina')   { <app-regina [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-regina> }
+                      @case('re')       { <app-re [color]="getColorePezzo(getPezzo(r,c)!)" draggable="true" (dragstart)="pickPezzo($event, r, c)"></app-re> }
+                    }
+                  }
+                  @if (showPromozioneDropdown && promozioneDestinazione?.r === r && promozioneDestinazione?.c === c) {
+                    <select [(ngModel)]="pezzoPromozione" (change)="confermaPromozione()" class="promozione-select">
+                      <option value="REGINA">Regina ♕</option>
+                      <option value="TORRE">Torre ♖</option>
+                      <option value="ALFIERE">Alfiere ♗</option>
+                      <option value="CAVALLO">Cavallo ♘</option>
+                    </select>
+                  }
+                </div>
+              }
+            </div>
+            <div class="row-label">{{ r }}</div>
+          </div>
+        }
+      </div>
+
+      <div class="col-labels bottom">
+        <div *ngFor="let c of colonne" class="col-label">{{ c.toUpperCase() }}</div>
+      </div>
     </div>
   </div>
 }

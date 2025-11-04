@@ -4,10 +4,11 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 120px 185px;
+  padding: 120px 22rem 0 17rem;
   min-height: 100vh;
   overflow: hidden;
   color: #fff;
+  padding-bottom: 500px;
 
   /* Effetto nebbia di sfondo */
   background-color: #1e1e1e;
@@ -28,16 +29,16 @@
 
 /* === HERO HEADER COMPATTO === */
 .homepage-header {
-  position: relative;
+  width: 100%;
+  height: 45vh;
   display: flex;
-  align-self: flex-start;
-  justify-content: flex-start;
-  height: 100%;
-  width: 1306px;
-  overflow: hidden;
-  border-radius: 25px 25px 25px 25px;
-  margin-left: 80px;
-  padding-left: 40px;
+  justify-content: left;
+  align-items: center;
+  text-align: left;
+  color: #fff;
+  position: relative;
+  border-radius: 18px;
+  padding-left: 2rem;
 
   /* 🔸 gradiente + immagine */
   background: linear-gradient(
@@ -53,24 +54,21 @@
 .header-content {
   position: relative;
   z-index: 2;
-  max-width: 600px;
-  padding: 70px 50px;
-  color: #2c1c0e; /* 🔸 testo scuro per contrasto */
+  animation: fadeInDown 1s ease-out;
 }
 
 /* === TESTO === */
 .header-content h1 {
-  font-size: 2.3rem;
-  margin-bottom: 10px;
-  color: #2c1c0e; /* scuro ma non nero puro */
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  background: linear-gradient(90deg,darkslategrey, black);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .header-content p {
-  font-size: 1rem;
-  margin-bottom: 16px;
-  color: #3a2a1a; /* leggermente più chiaro per il corpo testo */
-  line-height: 1.5;
+  color: black;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  margin: 0.4rem 0;
 }
 
 /* === PULSANTE === */
@@ -78,7 +76,7 @@
   font-size: 0.95rem;
   padding: 8px 20px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #ffb84d, #ff8c46);
+  background: linear-gradient(135deg, gray, black);
   border: none;
   color: #fff;
   font-weight: 600;
@@ -126,89 +124,71 @@
 .homepage-cards {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;  /* allinea il contenuto interno a sinistra */
-  gap: 24px;
-  max-width: 450px;
-  padding: 20px 0 100px 40px;
-  margin-left: 0;           /* assicura che non venga centrato */
-  margin-right: auto;       /* forza allineamento a sinistra */
+  align-items: flex-start;   /* allinea le card a sinistra */
+  justify-content: flex-start;
+  gap: 1.5rem;
+  padding-left: 0;        /* margine a sinistra */
+  margin: 2rem 0;
+  width: fit-content;        /* solo quanto serve alle card */
+  align-self: flex-start;    /* forza l'allineamento nel parent flex */
 }
+
+/* In caso il parent la centri con flex, override diretto */
+.homepage-cards {
+  margin-left: 0 !important;
+  margin-right: auto !important; /* spinge tutto a sinistra */
+}
+
+
 
 /* === CARD === */
-.homepage-cards .card {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  justify-content: space-between;
-  width: 100%;
-  height: 200px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 18px;
+.card {
+  background: #2b2b2b;
+  border-radius: 16px;
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-  transition: all 0.35s ease;
-  position: relative;
   cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: row; /* immagine a destra, testo a sinistra */
+  align-items: stretch;
+  width: 420px;        /* larghezza fissa per stabilità */
+  height: 180px;       /* altezza coerente */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Effetto luce dinamica */
-.homepage-cards .card::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at top left, rgba(255,165,0,0.25), transparent 70%);
-  transform: rotate(25deg);
-  opacity: 0;
-  transition: opacity 0.5s;
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(255, 140, 0, 0.3);
 }
 
-.homepage-cards .card:hover::before {
-  opacity: 1;
-}
-
-.homepage-cards .card:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
-}
-
-/* === TESTO === */
+/* === CONTENUTO TESTO === */
 .card-content {
   flex: 1;
-  padding: 20px;
+  padding: 1rem 1.2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  color: #e2e2e2;
   text-align: left;
-  z-index: 2;
 }
 
 .card-content h3 {
-  margin-bottom: 10px;
-  color: #ffb86c;
+  color: #ffb347;
+  margin-bottom: 0.5rem;
   font-size: 1.2rem;
   font-weight: 600;
-  transition: color 0.3s, text-shadow 0.3s;
 }
 
 .card-content p {
-  color: #e2e2e2;
   font-size: 0.95rem;
+  color: #ccc;
   line-height: 1.4;
-}
-
-.homepage-cards .card:hover h3 {
-  color: #ffc676;
-  text-shadow: 0 0 10px rgba(255, 165, 0, 0.4);
 }
 
 /* === IMMAGINE === */
 .card-image {
-  flex: 1;
+  width: 45%;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -216,33 +196,29 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
+  transition: transform 0.4s ease;
 }
 
-.homepage-cards .card:hover .card-image img {
+.card:hover img {
   transform: scale(1.1);
 }
 
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
   .homepage-cards {
-    align-items: center; /* centrate su mobile */
-    max-width: 100%;
+    align-items: center; /* centrale su mobile */
     padding-left: 0;
   }
 
-  .homepage-cards .card {
-    flex-direction: column;
+  .card {
     width: 90%;
+    flex-direction: column;
     height: auto;
   }
 
   .card-image {
-    height: 180px;
-  }
-
-  .card-content {
-    text-align: center;
+    width: 100%;
+    height: 160px;
   }
 }
 
@@ -406,21 +382,24 @@
 
 /* Tabella partite */
 .recent-matches {
-  position: absolute;
-  top: 475px;
-  right: 200px;
-  width: 900px;
-  left: 670px;
-
-
+  align-self: flex-start;
+  margin-left: 31rem; /* sposta a destra delle card */
+  margin-top: -40rem;  /* regola verticale se serve */
+  width: 1000px;
+  max-width: 100%;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 16px;
   backdrop-filter: blur(8px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   color: #fff;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-bottom: 1.5rem;
   animation: fadeInUp 0.6s ease forwards;
+  transition: all 0.3s ease;
 }
 
+/* Titolo tabella */
 .recent-matches h2 {
   color: #ffa94d;
   margin-bottom: 20px;
@@ -428,13 +407,14 @@
   text-shadow: 0 0 8px rgba(255, 165, 0, 0.3);
 }
 
-/* Tabella (già la tua, con leggero miglioramento) */
+/* Contenuto tabella */
 .matches-table {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
+/* Riga singola */
 .match {
   display: grid;
   grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr;
@@ -450,35 +430,21 @@
   box-shadow: 0 5px 15px rgba(255, 140, 70, 0.25);
 }
 
-.match-id {
-  font-weight: bold;
-  color: #ffb374;
-}
+/* Responsività */
+@media (max-width: 1400px) {
+  .recent-matches {
+    margin-left: 0; /* va sotto le card */
+    width: 100%;
+  }
 
-.players strong {
-  color: #ff8c46;
-}
+  .match {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 10px;
+  }
 
-.winner span {
-  color: #ffb374;
-  font-weight: 600;
-}
-
-.points {
-  color: #9fffa2;
-  font-weight: 500;
-}
-
-.date {
-  color: #ccc;
-  font-size: 0.9em;
-  text-align: right;
-}
-
-/* Effetto fade-in dolce */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+  .date {
+    text-align: left;
+  }
 }
 
 

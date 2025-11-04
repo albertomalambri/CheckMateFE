@@ -10,6 +10,7 @@ export interface Mossa
   cattura?: boolean;
   arrocco?: boolean;
   promozione?: boolean;
+  pezzoPromozione:string;
 }
 export interface cellaDTO{
   row: number;
