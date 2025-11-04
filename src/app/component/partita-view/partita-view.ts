@@ -12,6 +12,7 @@ import {Pezzo, PezzoCodice} from '../../model/pezzo.model';
 import {cellaDTO} from '../../model/partita.model';
 import{ScacchieraGameStateDTO} from '../../model/partita.model';
 import {FormsModule} from '@angular/forms';
+import {Router} from '@angular/router';
 
 const CodiceToBackendPezzo: Record<PezzoCodice, string> = {
   PE: 'pedone',
@@ -59,14 +60,17 @@ export class PartitaViewComponent implements OnInit {
   righe: number[] = [8, 7, 6, 5, 4, 3, 2, 1];
   colonne: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
   gameStarted: boolean = false;
+  gameEnded: boolean = false;
   loading: boolean = false;
+  risultato: string = "";
+  coloreGiocatore: string = "";
   showPromozioneDropdown: boolean = false;
   promozioneDestinazione: { r: number, c: string } | null = null;
   pezzoPromozione: string = ''; // default: donna
 
   private stockfish: any;
 
-  constructor(private partitaService: PartitaService) {}
+  constructor(private partitaService: PartitaService, private route: Router) {}
 
   errorMessage = '';
   valutazioneCorrente: number = 0; // punteggio del motore (in centipawn)
@@ -145,6 +149,7 @@ export class PartitaViewComponent implements OnInit {
         this.partita = partita;
         this.loading = false;
         this.gameStarted = true;
+        this.gameEnded = false;
         console.log('✅ Partita creata:', this.partita);
       },
       error: (err) => {
@@ -244,6 +249,7 @@ export class PartitaViewComponent implements OnInit {
           this.promozioneDestinazione = null;
           this.showPromozioneDropdown = false;
           this.pezzoPromozione = '';
+          this.coloreGiocatore = stato.currentPlayer;
 
         // 🎯 ANALISI AUTOMATICA DELLA MOSSA
         const fenPrima = this.convertiScacchieraInFEN(); // FEN prima della mossa
@@ -269,19 +275,27 @@ export class PartitaViewComponent implements OnInit {
 
         console.log(`Analisi: ${giudizio} (${valutazioneDopo.toFixed(2)})`);
 
+        // ✅ Qui puoi controllare lo stato della partita
           // ✅ Qui puoi controllare lo stato della partita
-        if (stato.isCheckMate) {
+        if (stato.checkMate) {
           const audio = new Audio('11l-victory_trumpet-1749704501065-358769.mp3'); // piccolo suono finto
           audio.play().catch(() => {});
           this.partitaService.finePartita(this.partita.id);
+          this.gameEnded = true;
+          if (this.coloreGiocatore=="BIANCO")
+            this.risultato = "Il giocatore NERO vince il game !";
+          else
+            this.risultato = "Il giocatore BIANCO vince il game !";
           // (opzionale: salva risultato o blocca altre mosse)
         }
-        else if (stato.isStallo) {
+        else if (stato.stallo) {
           const audio = new Audio('boo-36556.mp3'); // piccolo suono finto
           audio.play().catch(() => {});
           this.partitaService.finePartita(this.partita.id);
+          this.gameEnded = true;
+          this.risultato = "Pareggio !";
         }
-        else if (stato.isCheck) {
+        else if (stato.check) {
           const audio = new Audio('11l-victory_trumpet-1749704463122-358787.mp3'); // piccolo suono finto
           audio.play().catch(() => {});
         }
@@ -384,7 +398,43 @@ export class PartitaViewComponent implements OnInit {
     }).join('/') + ' w - - 0 1'; // parte finale semplificata
   }
 
+  restartGame(): void {
+    console.log('🔁 Riavvio della partita in corso...');
 
+    // 🔹 1. Reset completo dello stato del componente
+    this.gameEnded = false;
+    this.gameStarted = false;
+    this.loading = true;
+    this.risultato = '';
+    this.mosse = [];
+    this.selectedPezzo = null;
+    this.scacchiera = Array.from({ length: 8 }, () => Array(8).fill(null));
+
+    // 🔹 2. Richiedi una nuova partita al backend
+    this.partitaService.startPartita().subscribe({
+      next: (nuovaPartita) => {
+        console.log('✅ Nuova partita ricevuta:', nuovaPartita);
+        this.partita = nuovaPartita;
+
+        // 🔹 3. Ricostruisci la scacchiera
+        this.convertResponse(nuovaPartita);
+        this.loading = false;
+        this.gameStarted = true;
+
+        // 🔊 suono d’avvio
+        const audio = new Audio('chess-pieces-hitting-wooden-board-99336_vlXIuPS5.mp3');
+        audio.play().catch(() => {});
+      },
+      error: (err) => {
+        console.error('❌ Errore durante il riavvio della partita:', err);
+        this.loading = false;
+      }
+    });
+  }
+
+  goHome() {
+    this.route.navigate(['']); //
+  }
 
 }
 

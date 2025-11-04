@@ -1,9 +1,10 @@
 import {Injectable, OnInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {BehaviorSubject, Observable, switchMap, tap} from 'rxjs';
+import {Partita} from '../model/partita.model';
 
 export interface User {
-  id: number;
+  id: string;
   username: string;
   email?: string;
   token?: string;
@@ -29,7 +30,6 @@ export class AuthService implements OnInit{
       this.currentUserSubject.next(JSON.parse(savedUser));
     }
   }
-
   ngOnInit(): void {
     // ✅ controlla se l'utente è ancora loggato tramite cookie HttpOnly
     this.http.get<User>('${this.apiUrl}/userinformation', { withCredentials: true })
@@ -80,6 +80,12 @@ export class AuthService implements OnInit{
   // ================= GET CURRENT USER =================
   get currentUser(): User | null {
     return this.currentUserSubject.value;
+  }
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`/userinformation`, {withCredentials: true})
+  }
+  finePartita(id: number | undefined) {
+    return this.http.get<Partita>(`/stato/${id}`, {withCredentials: true})
   }
 
   // ================= IS LOGGED IN =================

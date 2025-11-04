@@ -14,8 +14,8 @@
 }
 
 .navbar-brand img {
-  width: 120px;   /* cambia come vuoi */
-  height: auto;
+  width: 200px;   /* cambia come vuoi */
+  height: 70px;
 }
 
 .navbar-icon-top .navbar-nav .nav-link > .fa {
