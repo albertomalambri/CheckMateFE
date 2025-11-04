@@ -1,5 +1,3 @@
-<div class="page-wrapper" [class.shifted]="sidebarOpen">
-
 <!-- Loader -->
 <div class="page-loader" *ngIf="isLoading">
   <div class="chess-plane">
@@ -16,10 +14,35 @@
   <router-outlet></router-outlet>
 </div>
 
-<app-emails></app-emails>
 <app-navbar></app-navbar>
 <app-navbar2></app-navbar2>
 <app-user-card></app-user-card>
+<!--<h1>I messaggi</h1>-->
+<!--@for (m of messaggiServ.messages; track $index) {-->
+
+<!--})-->
+<div class="message-container">
+  <!--<h1 class="title">📨 I Messaggi</h1>-->
+
+  <div class="message-list">
+    @for (m of messaggiServ.messages; track $index) {
+      <div class="message-card">
+        <div class="message-header">
+          <h2>{{ m.title }}</h2>
+          <span class="timestamp">{{ m.timeStamp?.toLocaleString() }}</span>
+        </div>
+        <p class="content">{{ m.content }}</p>
+        <div class="meta">
+          <span><strong>Da:</strong> {{ m.usernameSender || 'Anonimo' }}</span>
+          <span><strong>A:</strong> {{ m.usernameReceiver || 'Tutti' }}</span>
+          <span><strong>Archiviato:</strong> {{ m.archiviato ? '✅' : '❌' }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+
 
 
 

@@ -302,19 +302,131 @@ body {
   background: linear-gradient(135deg, #ffb84d, #ff8c46);
 }
 
-.spinner {
-  border: 6px solid #f3f3f3;
-  border-top: 6px solid #0078d4;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 0.8s linear infinite;
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.start-btn {
+  background: linear-gradient(145deg, #222, #333);
+  color: #f5f5f5;
+  border: none;
+  padding: 0.9rem 2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease-in-out;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
+
+.start-btn:hover:not(:disabled) {
+  background: linear-gradient(145deg, #444, #555);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.start-btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.start-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.start-btn::before {
+  content: '♞';
+  font-size: 1.3rem;
+  transition: transform 0.3s;
+}
+
+.start-btn:hover::before {
+  transform: rotate(-10deg) scale(1.1);
+}
+
+
+.scacchiera-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.col-labels {
+  display: grid;
+  grid-template-columns: repeat(8, 60px);
+  width: 480px;
+  text-align: center;
+  font-weight: bold;
+  color: #ccc;
+  user-select: none;
+}
+
+.scacchiera-righe {
+  display: flex;
+  flex-direction: column;
+}
+
+.riga {
+  display: flex;
+  align-items: center;
+}
+
+.row-label {
+  width: 20px;
+  text-align: center;
+  font-weight: bold;
+  color: #ccc;
+  user-select: none;
+}
+
+.scacchiera-row {
+  display: grid;
+  grid-template-columns: repeat(8, 60px);
+}
+
+.cella {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bianca {
+  background-color: #f0d9b5;
+}
+
+.nera {
+  background-color: #b58863;
+}
+
+.start-btn {
+  background: linear-gradient(90deg, #007bff, #00c4ff);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.start-btn:hover {
+  background: linear-gradient(90deg, #0056b3, #00aaff);
+  transform: scale(1.05);
+}
+
+
 
 
 
