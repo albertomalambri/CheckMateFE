@@ -13,6 +13,7 @@ import {cellaDTO} from '../../model/partita.model';
 import{ScacchieraGameStateDTO} from '../../model/partita.model';
 import{PromotionDropdown} from '../promotion-dropdown/promotion-dropdown';
 import {FormsModule} from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 
 const CodiceToBackendPezzo: Record<PezzoCodice, string> = {
   PE: 'pedone',
@@ -22,6 +23,7 @@ const CodiceToBackendPezzo: Record<PezzoCodice, string> = {
   RG: 'regina',
   RE: 're'
 };
+
 
 @Component({
   selector: 'app-partita-view',
@@ -60,31 +62,79 @@ export class PartitaViewComponent implements OnInit {
   loading: boolean = false;
   showPromozioneDropdown: boolean = false;
   promozioneDestinazione: { r: number, c: string } | null = null;
-  pezzoPromozione: string = 'Q'; // default: donna
+  pezzoPromozione: string = ''; // default: donna
+
+  private stockfish: any;
 
   constructor(private partitaService: PartitaService) {}
 
   errorMessage = '';
+  valutazioneCorrente: number = 0; // punteggio del motore (in centipawn)
+  analisi: string = ''; // testo da mostrare accanto alla mossa
 
-  convertResponse(data: any){
+  mosse: string[] = [];
+
+  faiMossa(mossa: string) {
+    this.mosse.push(mossa);
+  }
+
+  convertResponse(data: any) {
+    if (!data || !Array.isArray(data.scacchiera)) {
+      console.warn("⚠️ Nessuna scacchiera trovata:", data);
+      this.scacchiera = [];
+      return;
+    }
+
+    const copia = [...data.scacchiera];
     this.scacchiera = [];
-    for(let i = 0; i < 8; i++){
-      this.scacchiera.push(data.scacchiera.splice(0, 8));
+
+    for (let i = 0; i < 8; i++) {
+      this.scacchiera.push(copia.splice(0, 8));
     }
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    // 🔹 1. Carica la partita dal backend
     this.partitaService.getPartita().subscribe({
       next: (data) => {
+        console.log("✅ Dati ricevuti:", data);
         this.partita = data;
         this.convertResponse(data);
-        this.loading = false; // fine caricamento
+        this.loading = false;
       },
-      error: () => {
+      error: (err) => {
+        console.error("❌ Errore nel caricamento della partita:", err);
         this.loading = false;
       }
     });
+
+    // 🔹 2. Inizializza Stockfish come Web Worker
+    if (typeof Worker !== 'undefined') {
+      try {
+        // Il percorso parte dalla cartella del componente TypeScript
+        this.stockfish = new Worker(
+          new URL('../../workers/stockfish.worker.ts', import.meta.url),
+          { type: 'module' }
+        );
+
+        // Gestione dei messaggi in arrivo dal motore
+        this.stockfish.onmessage = (event: any) => {
+          console.log('📨 Messaggio da Stockfish:', event.data);
+        };
+
+        // Invia comando iniziale al motore
+        this.stockfish.postMessage('uci');
+        console.log('♟️ Stockfish inizializzato correttamente ✅');
+      } catch (error) {
+        console.error('❌ Errore nel caricamento di Stockfish:', error);
+      }
+    } else {
+      console.error('❌ Web Workers non supportati nel browser.');
+    }
   }
+
+
+
 
   startGame(): void {
     this.loading = true;
@@ -142,47 +192,42 @@ export class PartitaViewComponent implements OnInit {
   }
 
   dropPezzo(event: DragEvent, r: number, c: string) {
+
     event.preventDefault();
     if (!this.selectedPezzo) return;
 
     const pezzo = this.getPezzo(this.selectedPezzo.r, this.selectedPezzo.c);
     if (!pezzo) return;
 
-      if (this.isPromotion(pezzo, r)) {
-        this.promozioneDestinazione = { r, c };
-        this.showPromozioneDropdown = true;
-        return;
-      }
-
-      this.inviaMossa(r, c, pezzo.pezzo, false);
-  }
-
-
-  getColorePezzo(pezzo: Pezzo){
-    if(pezzo.colorePezzo == "BIANCO"){
-      return "white"
+    if (this.isPromotion(pezzo, r)) {
+      this.promozioneDestinazione = { r, c };
+      this.showPromozioneDropdown = true;
+      return;
     }
-    return "black"
+
+    this.inviaMossa(r, c, pezzo.pezzo, false, '');
   }
 
-  convertiScacchiera(scacchiera: any[]): any[][] {
-    const righe: any[][] = [];
-    for (let i = 0; i < 8; i++) {
-      righe.push(scacchiera.slice(i * 8, (i + 1) * 8));
-    }
-    return righe;
-  }
-  inviaMossa(r: number, c: string, pezzo: string, promozione: boolean) {
+  inviaMossa(r: number, c: string, pezzo: string, promozione: boolean, pezzoPromozione: string) {
     if (!this.selectedPezzo) return;
     const mossa: Mossa = {
       numero: 0,
       da: `${this.selectedPezzo.r}${this.selectedPezzo.c}`,
       a: `${r}${c}`,
-      pezzo: PezzoCodice[pezzo as keyof typeof PezzoCodice],
+      pezzo: PezzoCodice[pezzo.pezzo as keyof typeof PezzoCodice],
       cattura: this.getPezzo(r, c) != null,
       arrocco: false,
       promozione: promozione,
+      pezzoPromozione: PezzoCodice[pezzoPromozione as keyof typeof PezzoCodice],
     };
+
+    const pezzoOggetto = this.getPezzo(this.selectedPezzo.r, this.selectedPezzo.c);
+    if (pezzoOggetto) {
+      const nomePezzo = pezzoOggetto.pezzo?.toUpperCase() ?? 'PEZZO';
+      const coloreSimbolo = pezzoOggetto.colorePezzo === 'BIANCO' ? '⚪' : '⚫';
+      this.faiMossa(`${coloreSimbolo} ${nomePezzo} da ${this.selectedPezzo.c}${this.selectedPezzo.r} a ${c}${r}`);
+    }
+
 
     // 🔹 Usa `id` della partita, non gameStateId
     if (!this.partita?.id) {
@@ -194,13 +239,38 @@ export class PartitaViewComponent implements OnInit {
     console.log('Mossa:', mossa);
 
     this.partitaService.eseguiMossa(this.partita.id, mossa).subscribe({
-      next: (stato: ScacchieraGameStateDTO) => {
-        this.scacchiera = this.convertiScacchiera(stato.scacchiera);
-        this.selectedPezzo = null;
-        this.promozioneDestinazione = null;
-        this.showPromozioneDropdown = false;
-        this.pezzoPromozione = 'DONNA'; // reset
-        // ✅ Qui puoi controllare lo stato della partita
+      next: async (stato: ScacchieraGameStateDTO) => {
+          this.scacchiera = this.convertiScacchiera(stato.scacchiera);
+          this.selectedPezzo = null;
+          this.promozioneDestinazione = null;
+          this.showPromozioneDropdown = false;
+          this.pezzoPromozione = '';
+
+        // 🎯 ANALISI AUTOMATICA DELLA MOSSA
+        const fenPrima = this.convertiScacchieraInFEN(); // FEN prima della mossa
+        const valutazionePrima = await this.analizzaPosizione(fenPrima);
+
+        // Applica la mossa sulla scacchiera prima di calcolare fenDopo
+        // (Assicurati di aver aggiornato la scacchiera prima di chiamare convertiScacchieraInFEN)
+        const fenDopo = this.convertiScacchieraInFEN(); // FEN dopo la mossa
+        const valutazioneDopo = await this.analizzaPosizione(fenDopo);
+
+        // calcola il delta
+        const delta = valutazioneDopo - valutazionePrima;
+
+        // --- soglie modificate per avere più varietà nei giudizi ---
+        let giudizio = '';
+        if (delta >= 1.5) giudizio = '✅ Ottima mossa';
+        else if (delta >= 0.5) giudizio = '👍 Buona';
+        else if (delta >= -0.5) giudizio = '⚠️ Imprecisa';
+        else giudizio = '❌ Errore';
+
+        this.mosse[this.mosse.length - 1] += ` → ${giudizio} (Δ=${delta.toFixed(2)}, Val=${valutazioneDopo.toFixed(2)})`;
+
+
+        console.log(`Analisi: ${giudizio} (${valutazioneDopo.toFixed(2)})`);
+
+          // ✅ Qui puoi controllare lo stato della partita
         if (stato.isCheckMate) {
           const audio = new Audio('11l-victory_trumpet-1749704501065-358769.mp3'); // piccolo suono finto
           audio.play().catch(() => {});
@@ -225,27 +295,23 @@ export class PartitaViewComponent implements OnInit {
       error: err => {
         console.error('Errore nella mossa:', err);
         this.selectedPezzo = null;
-        this.promozioneDestinazione = null;
-        this.showPromozioneDropdown = false;
-        this.pezzoPromozione = 'DONNA';
       }
     });
   }
-  isPromotion(pezzo:Pezzo, r:number): boolean{
 
-    if(pezzo.pezzo=="PEDONE" && pezzo.colorePezzo =="BIANCO" && r == 8){
-      return true;
+  getColorePezzo(pezzo: Pezzo){
+    if(pezzo.colorePezzo == "BIANCO"){
+      return "white"
     }
-    if(pezzo.pezzo=="PEDONE" && pezzo.colorePezzo =="NERO" && r == 1){
-      return true
-    }
-    return false;
+    return "black"
   }
-  confermaPromozione() {
-    if (!this.promozioneDestinazione || !this.selectedPezzo) return;
 
-    const { r, c } = this.promozioneDestinazione;
-    this.inviaMossa(r, c, this.pezzoPromozione, true);
+  convertiScacchiera(scacchiera: any[]): any[][] {
+    const righe: any[][] = [];
+    for (let i = 0; i < 8; i++) {
+      righe.push(scacchiera.slice(i * 8, (i + 1) * 8));
+    }
+    return righe;
   }
 
   riproduciSuono(file: string) {
@@ -257,6 +323,5 @@ export class PartitaViewComponent implements OnInit {
       console.warn('⚠️ Impossibile riprodurre il suono:', err);
     });
   }
-
 }
 

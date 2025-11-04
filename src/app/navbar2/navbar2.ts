@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
@@ -18,7 +18,7 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
   ],
   styleUrls: ['./navbar2.css']
 })
-export class Navbar2 {
+export class Navbar2{
   isLoggedIn = false;
   username = '';
 
@@ -47,6 +47,7 @@ export class Navbar2 {
       }
     });
   }
+
 
   openLogin() {
     this.isLoginOpen = true;

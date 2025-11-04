@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {BehaviorSubject, Observable, switchMap, tap} from 'rxjs';
 
@@ -17,7 +17,7 @@ export interface User {
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnInit{
 
   private apiUrl = '/api/auth'; //
   private currentUserSubject = new BehaviorSubject<User | null>(null);
@@ -28,6 +28,15 @@ export class AuthService {
     if (savedUser) {
       this.currentUserSubject.next(JSON.parse(savedUser));
     }
+  }
+
+  ngOnInit(): void {
+    // ✅ controlla se l'utente è ancora loggato tramite cookie HttpOnly
+    this.http.get<User>('${this.apiUrl}/userinformation', { withCredentials: true })
+      .subscribe({
+        next: (user) => this.setUser(user),
+        error: () => this.setUser(null)
+      });
   }
 
   // ================= LOGIN =================

@@ -1,10 +1,14 @@
-/* Wrapper della scacchiera per centrarla */
+/* Centra la scacchiera e la fa adattare allo schermo */
 .scacchiera-wrapper {
   display: flex;
-  justify-content: center; /* centra orizzontalmente */
-  align-items: center;     /* centra verticalmente se vuoi */
+  justify-content: center;     /* centrata orizzontalmente */
+  align-items: center;         /* centrata verticalmente */
+  gap: 40px;                   /* spazio tra scacchiera e box */
   width: 100%;
-  margin-top: 100px;
+  height: 100vh;               /* altezza finestra intera */
+  padding: 20px;               /* margini interni */
+  box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
 /* Body senza padding che rompe centratura */
@@ -112,19 +116,21 @@ body {
 .tag-mossa.arrocco { background-color: #a04000; }
 .tag-mossa.promozione { background-color: #f39c12; color: #1c1c1c; }
 
-/* Scacchiera */
+/*
 .scacchiera {
-  width: 600px;
-  max-width: 90vw;
+  width: 90%;
+  max-width: 600px;
+  aspect-ratio: 1 / 1;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  aspect-ratio: 1 / 1;
+  grid-template-rows: repeat(8, 1fr);
   gap: 2px;
   border: 10px solid #d35400;
   border-radius: 10px;
-  margin: 0 auto;           /* centra orizzontalmente */
+  box-sizing: border-box;
+  margin: 0 auto;
 }
-
+*/
 /* Celle */
 .cella {
   aspect-ratio: 1 / 1;      /* sempre quadrate */
@@ -165,7 +171,7 @@ body {
   background: #3c3c3c;
   color: chocolate;
   border: none;
-  padding: 0.6rem 1.2rem;
+  padding: 5rem 1.2rem;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
@@ -207,125 +213,6 @@ body {
 
 
 
-.chat-box {
-  position: relative; /* 🔸 Puoi cambiare in absolute, fixed, ecc. */
-  width: 320px;
-  height: 600px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  color: #fff;
-  font-family: "Poppins", sans-serif;
-  overflow: hidden;
-
-  /* 🔸 Puoi muoverla dove vuoi */
-  bottom: 600px;
-  left: 300px;
-}
-
-/* Header */
-.chat-header {
-  background: linear-gradient(135deg, #ff8c46, #ffb84d);
-  color: #222;
-  padding: 3px 15px;
-  font-weight: 200;
-  font-size: 1rem;
-  text-align: center;
-  user-select: none;
-}
-
-/* Messaggi */
-.chat-messages {
-  height: calc(100% - 95px); /* spazio dinamico */
-  padding: 10px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  scroll-behavior: smooth;
-}
-
-.message {
-  max-width: 85%;
-  padding: 8px 12px;
-  border-radius: 10px;
-  line-height: 1.4;
-  font-size: 0.9rem;
-}
-
-.message.sent {
-  align-self: flex-end;
-  background: rgba(255, 140, 70, 0.3);
-}
-
-.message.received {
-  align-self: flex-start;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.message .author {
-  font-weight: 600;
-  margin-right: 6px;
-  color: #ffa94d;
-}
-
-/* Input area */
-.chat-input {
-  display: flex;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  height: 55px;
-}
-
-.chat-input input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: #fff;
-  padding: 10px 12px;
-  font-size: 0.9rem;
-  outline: none;
-}
-
-.chat-input button {
-  background: linear-gradient(135deg, #ff8c46, #ffb84d);
-  border: none;
-  color: #222;
-  font-weight: 600;
-  padding: 0 18px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.chat-input button:hover {
-  background: linear-gradient(135deg, #ffb84d, #ff8c46);
-}
-
-.controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
-}
-
-.start-btn {
-  background: linear-gradient(145deg, #222, #333);
-  color: #f5f5f5;
-  border: none;
-  padding: 0.9rem 2rem;
-  font-size: 1.2rem;
-  font-weight: 500;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s ease-in-out;
-  letter-spacing: 0.5px;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
 .start-btn:hover:not(:disabled) {
   background: linear-gradient(145deg, #444, #555);
   transform: translateY(-2px);
@@ -353,11 +240,15 @@ body {
 }
 
 
+
+
 .scacchiera-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 5px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .col-labels {
@@ -390,12 +281,12 @@ body {
 
 .scacchiera-row {
   display: grid;
-  grid-template-columns: repeat(8, 60px);
+  grid-template-columns: repeat(8, 80px);
 }
 
 .cella {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -409,23 +300,130 @@ body {
   background-color: #b58863;
 }
 
+
+
+
+
+
 .start-btn {
-  background: linear-gradient(90deg, #007bff, #00c4ff);
-  color: white;
+  background: linear-gradient(90deg, #ff8c00, #ffb347);
+  color: #fff;
   border: none;
-  padding: 12px 24px;
-  border-radius: 10px;
+  padding: 14px 28px;
+  border-radius: 12px;
   font-size: 18px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: all 0.4s ease;
+  box-shadow: 0 4px 10px rgba(255, 140, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  margin-top: 3rem;
 }
 
+/* Luce che scorre */
+.start-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.25);
+  transform: skewX(-25deg);
+  transition: left 0.5s ease;
+}
+
+/* Hover elegante */
 .start-btn:hover {
-  background: linear-gradient(90deg, #0056b3, #00aaff);
-  transform: scale(1.05);
+  background: linear-gradient(90deg, #ff9f43, #ff7518);
+  transform: scale(1.07);
+  box-shadow: 0 6px 20px rgba(255, 140, 0, 0.5);
 }
 
+/* Effetto luce in movimento all’hover */
+.start-btn:hover::before {
+  left: 125%;
+}
+
+/* Stato attivo (click) */
+.start-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 3px 8px rgba(255, 140, 0, 0.4);
+}
+
+/* Variante su sfondo grigio */
+body {
+  background-color: #f2f2f2;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+
+
+
+.partita-layout {
+  display: flex;
+  justify-content: center;      /* centrato orizzontalmente */
+  align-items: flex-start;      /* puoi usare center se vuoi anche verticalmente */
+  gap: 40px;
+  width: 100%;
+  max-width: 1400px;           /* massimo “contenitore centrale” */
+  margin: 0 auto;              /* centratura orizzontale */
+  padding: 20px;               /* margine interno uniforme */
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+
+/* BOX MOSSE */
+.moves-box {
+  width: 350px;
+  height: 630px;
+  background: rgba(40, 40, 40, 0.9);
+  border: 1px solid rgba(255, 140, 70, 0.5);
+  border-radius: 12px;
+  margin-top: 2rem;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(255, 140, 70, 0.15);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #ffb347 rgba(255,255,255,0.05);
+  animation: fadeInLeft 0.5s ease forwards;
+}
+
+/* Titolo box */
+.moves-box h3 {
+  margin-bottom: 10px;
+  text-align: center;
+  color: #ffb347;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Lista mosse */
+.moves-list div {
+  padding: 6px 8px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: background 0.2s;
+}
+
+.moves-list div:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Animazione */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
 
 
