@@ -1,0 +1,75 @@
+/* Layout generale */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* Contenitore principale */
+.container {
+  background: white;
+  padding: 100px 3rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+}
+
+/* Titolo */
+h2 {
+  color: #4a148c;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+/* Pulsante "Segna tutti come letti" */
+button {
+  background-color: #7e57c2;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+button:hover {
+  background-color: #5e35b1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(126, 87, 194, 0.3);
+}
+
+/* Lista messaggi */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+/* Singolo messaggio */
+li {
+  background: #f3e5f5;
+  padding: 0.8rem 1rem;
+  border-radius: 0.8rem;
+  margin-bottom: 0.7rem;
+  transition: all 0.3s ease;
+}
+
+li:hover {
+  background: #ede7f6;
+  transform: scale(1.02);
+}
+
+/* Evidenziazione per i messaggi nuovi */
+li strong {
+  color: #d32f2f;
+  margin-right: 0.5rem;
+}
+

@@ -6,7 +6,7 @@
   top: 0;
   left: 0;
   z-index: 9999;
-  background: linear-gradient(to right, chocolate, orange) !important;
+  background: linear-gradient(160deg, chocolate 60%, orange);
 }
 
 .navbar-brand {
