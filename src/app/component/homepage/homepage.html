@@ -48,36 +48,40 @@
     <div class="recent-matches">
       <h2>Ultime Partite</h2>
 
-      @if (user?.partite?.length) {
-        <div class="matches-table">
-          @if (user!=null) {
-            @for (p of user.partite; track p.id) {
-              <div class="match">
-                <div class="match-id">#{{ p.id }}</div>
-                <div class="players">
-                  👑 <strong>{{ p.giocatoreBianco }}</strong> vs <strong>{{ p.giocatoreNero }}</strong>
-                </div>
-                <div class="winner">
-                  🏆 Vincitore:
-                  <span>
-                {{
-                      p.risultato === '1-0' ? p.giocatoreBianco :
-                        p.risultato === '0-1' ? p.giocatoreNero :
-                          'Pareggio'
-                    }}
-              </span>
-                </div>
-                <div class="points">
-                  {{ p.risultato === '1-0' ? '+24' : p.risultato === '0-1' ? '-12' : '+0' }} punti
-                </div>
-                <div class="date">31 Ottobre 2025</div>
-              </div>
-            }
-          }
+      <div class="matches-table">
+        <div class="match">
+          <div class="match-id">#B4C5D6</div>
+          <div class="players">👑 <strong>Alberto Malambri</strong> vs <strong>KingSlayer</strong></div>
+          <div class="winner">🏆 Vincitore: <span>Alberto Malambri</span></div>
+          <div class="points">+18 punti</div>
+          <div class="date">1 Novembre 2025</div>
         </div>
-      } @else {
-        <p>Nessuna partita trovata 😢</p>
-      }
+
+        <div class="match">
+          <div class="match-id">#C7D8E9</div>
+          <div class="players">👑 <strong>Thilan Jayasuriya</strong> vs <strong>RookStorm</strong></div>
+          <div class="winner">🏆 Vincitore: <span>Thilan Jayasuriya</span></div>
+          <div class="points">+30 punti</div>
+          <div class="date">2 Novembre 2025</div>
+        </div>
+
+        <div class="match">
+          <div class="match-id">#D1E2F3</div>
+          <div class="players">👑 <strong>Pier Francesco Milani</strong> vs <strong>KnightRider</strong></div>
+          <div class="winner">🏆 Vincitore: <span>Pier Francesco Milani</span></div>
+          <div class="points">+22 punti</div>
+          <div class="date">3 Novembre 2025</div>
+        </div>
+
+        <div class="match">
+          <div class="match-id">#E4F5G6</div>
+          <div class="players">👑 <strong>Simone Brusa</strong> vs <strong>QueenHunter</strong></div>
+          <div class="winner">🏆 Vincitore: <span>Simone Brusa</span></div>
+          <div class="points">+25 punti</div>
+          <div class="date">4 Novembre 2025</div>
+        </div>
+      </div>
+
     </div>
 
   </section>
