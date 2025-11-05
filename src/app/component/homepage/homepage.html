@@ -48,40 +48,36 @@
     <div class="recent-matches">
       <h2>Ultime Partite</h2>
 
-      <div class="matches-table">
-        <div class="match">
-          <div class="match-id">#A1B2C3</div>
-          <div class="players">👑 <strong>Lo Spacca Donne</strong> vs <strong>PawnMaster</strong></div>
-          <div class="winner">🏆 Vincitore: <span>Lo Spacca Donne</span></div>
-          <div class="points">+24 punti</div>
-          <div class="date">26 Ottobre 2025</div>
+      @if (user?.partite?.length) {
+        <div class="matches-table">
+          @if (user!=null) {
+            @for (p of user.partite; track p.id) {
+              <div class="match">
+                <div class="match-id">#{{ p.id }}</div>
+                <div class="players">
+                  👑 <strong>{{ p.giocatoreBianco }}</strong> vs <strong>{{ p.giocatoreNero }}</strong>
+                </div>
+                <div class="winner">
+                  🏆 Vincitore:
+                  <span>
+                {{
+                      p.risultato === '1-0' ? p.giocatoreBianco :
+                        p.risultato === '0-1' ? p.giocatoreNero :
+                          'Pareggio'
+                    }}
+              </span>
+                </div>
+                <div class="points">
+                  {{ p.risultato === '1-0' ? '+24' : p.risultato === '0-1' ? '-12' : '+0' }} punti
+                </div>
+                <div class="date">31 Ottobre 2025</div>
+              </div>
+            }
+          }
         </div>
-
-        <div class="match">
-          <div class="match-id">#A1B2C3</div>
-          <div class="players">👑 <strong>Lo Spacca Donne</strong> vs <strong>PawnMaster</strong></div>
-          <div class="winner">🏆 Vincitore: <span>Lo Spacca Donne</span></div>
-          <div class="points">+24 punti</div>
-          <div class="date">26 Ottobre 2025</div>
-        </div>
-
-        <div class="match">
-          <div class="match-id">#A1B2C3</div>
-          <div class="players">👑 <strong>Lo Spacca Donne</strong> vs <strong>PawnMaster</strong></div>
-          <div class="winner">🏆 Vincitore: <span>Lo Spacca Donne</span></div>
-          <div class="points">+24 punti</div>
-          <div class="date">26 Ottobre 2025</div>
-        </div>
-
-        <div class="match">
-          <div class="match-id">#A1B2C3</div>
-          <div class="players">👑 <strong>Lo Spacca Donne</strong> vs <strong>PawnMaster</strong></div>
-          <div class="winner">🏆 Vincitore: <span>Lo Spacca Donne</span></div>
-          <div class="points">+24 punti</div>
-          <div class="date">26 Ottobre 2025</div>
-        </div>
-
-      </div>
+      } @else {
+        <p>Nessuna partita trovata 😢</p>
+      }
     </div>
 
   </section>

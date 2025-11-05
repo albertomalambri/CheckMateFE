@@ -11,9 +11,8 @@ import { TorreComponent } from '../pieces/torre/torre.component';
 import {Pezzo, PezzoCodice} from '../../model/pezzo.model';
 import {cellaDTO} from '../../model/partita.model';
 import{ScacchieraGameStateDTO} from '../../model/partita.model';
-import{PromotionDropdown} from '../promotion-dropdown/promotion-dropdown';
 import {FormsModule} from '@angular/forms';
-import {FormsModule} from '@angular/forms';
+import {Router} from '@angular/router';
 
 const CodiceToBackendPezzo: Record<PezzoCodice, string> = {
   PE: 'pedone',
@@ -42,6 +41,8 @@ const CodiceToBackendPezzo: Record<PezzoCodice, string> = {
   styleUrls: ['./partita-view.css']
 })
 
+
+
 export class PartitaViewComponent implements OnInit {
 
   partita: Partita = {
@@ -59,14 +60,17 @@ export class PartitaViewComponent implements OnInit {
   righe: number[] = [8, 7, 6, 5, 4, 3, 2, 1];
   colonne: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
   gameStarted: boolean = false;
+  gameEnded: boolean = false;
   loading: boolean = false;
+  risultato: string = "";
+  coloreGiocatore: string = "";
   showPromozioneDropdown: boolean = false;
   promozioneDestinazione: { r: number, c: string } | null = null;
   pezzoPromozione: string = ''; // default: donna
 
   private stockfish: any;
 
-  constructor(private partitaService: PartitaService) {}
+  constructor(private partitaService: PartitaService, private route: Router) {}
 
   errorMessage = '';
   valutazioneCorrente: number = 0; // punteggio del motore (in centipawn)
@@ -154,7 +158,6 @@ export class PartitaViewComponent implements OnInit {
     });
   }
 
-  // --- Funzioni per colore celle e gestione pezzi ---
   isBianca(r: number, c: string): boolean {
     const colIndex = this.colonne.indexOf(c);
     return (r + colIndex) % 2 === 0;
@@ -214,7 +217,7 @@ export class PartitaViewComponent implements OnInit {
       numero: 0,
       da: `${this.selectedPezzo.r}${this.selectedPezzo.c}`,
       a: `${r}${c}`,
-      pezzo: PezzoCodice[pezzo.pezzo as keyof typeof PezzoCodice],
+      pezzo: PezzoCodice[pezzo as keyof typeof PezzoCodice],
       cattura: this.getPezzo(r, c) != null,
       arrocco: false,
       promozione: promozione,
@@ -245,6 +248,7 @@ export class PartitaViewComponent implements OnInit {
           this.promozioneDestinazione = null;
           this.showPromozioneDropdown = false;
           this.pezzoPromozione = '';
+          this.coloreGiocatore = stato.currentPlayer;
 
         // 🎯 ANALISI AUTOMATICA DELLA MOSSA
         const fenPrima = this.convertiScacchieraInFEN(); // FEN prima della mossa
@@ -275,12 +279,19 @@ export class PartitaViewComponent implements OnInit {
           const audio = new Audio('11l-victory_trumpet-1749704501065-358769.mp3'); // piccolo suono finto
           audio.play().catch(() => {});
           this.partitaService.finePartita(this.partita.id);
+          this.gameEnded = true;
+          if (this.coloreGiocatore=="BIANCO")
+            this.risultato = "Il giocatore NERO vince il game !";
+          else
+            this.risultato = "Il giocatore BIANCO vince il game !";
           // (opzionale: salva risultato o blocca altre mosse)
         }
         else if (stato.isStallo) {
           const audio = new Audio('boo-36556.mp3'); // piccolo suono finto
           audio.play().catch(() => {});
           this.partitaService.finePartita(this.partita.id);
+          this.gameEnded = true;
+          this.risultato = "Pareggio !";
         }
         else if (stato.isCheck) {
           const audio = new Audio('11l-victory_trumpet-1749704463122-358787.mp3'); // piccolo suono finto
@@ -295,8 +306,29 @@ export class PartitaViewComponent implements OnInit {
       error: err => {
         console.error('Errore nella mossa:', err);
         this.selectedPezzo = null;
+        this.promozioneDestinazione = null;
+        this.showPromozioneDropdown = false;
+        this.pezzoPromozione = '';
       }
     });
+  }
+
+  isPromotion(pezzo:Pezzo, r:number): boolean{
+
+    if(pezzo.pezzo=="PEDONE" && pezzo.colorePezzo =="BIANCO" && r == 8){
+      return true;
+    }
+    if(pezzo.pezzo=="PEDONE" && pezzo.colorePezzo =="NERO" && r == 1){
+      return true
+    }
+    return false;
+  }
+
+  confermaPromozione() {
+    if (!this.promozioneDestinazione || !this.selectedPezzo) return;
+
+    const { r, c } = this.promozioneDestinazione;
+    this.inviaMossa(r, c,"PEDONE", true, this.pezzoPromozione);
   }
 
   getColorePezzo(pezzo: Pezzo){
@@ -323,5 +355,84 @@ export class PartitaViewComponent implements OnInit {
       console.warn('⚠️ Impossibile riprodurre il suono:', err);
     });
   }
+
+  analizzaPosizione(fen: string) {
+    return new Promise<number>((resolve) => {
+      let valutazione = 0;
+      this.stockfish.onmessage = (event: any) => {
+        const msg = event.data || event;
+        if (typeof msg === 'string' && msg.includes('score cp')) {
+          const match = msg.match(/score cp (-?\d+)/);
+          if (match) valutazione = parseInt(match[1]) / 100;
+        }
+        if (typeof msg === 'string' && msg.includes('bestmove')) {
+          resolve(valutazione);
+        }
+      };
+      this.stockfish.postMessage(`position fen ${fen}`);
+      this.stockfish.postMessage('go depth 12'); // profondità analisi
+    });
+  }
+
+  convertiScacchieraInFEN(): string {
+    const mappaPezzi: Record<string, string> = {
+      PEDONE_BIANCO: 'P', TORRE_BIANCO: 'R', CAVALLO_BIANCO: 'N', ALFIERE_BIANCO: 'B', REGINA_BIANCO: 'Q', RE_BIANCO: 'K',
+      PEDONE_NERO: 'p', TORRE_NERO: 'r', CAVALLO_NERO: 'n', ALFIERE_NERO: 'b', REGINA_NERO: 'q', RE_NERO: 'k',
+    };
+
+    return this.scacchiera.map(riga => {
+      let rigaFEN = '';
+      let vuote = 0;
+      for (const cella of riga) {
+        if (!cella || !cella.pezzo) vuote++;
+        else {
+          if (vuote > 0) { rigaFEN += vuote; vuote = 0; }
+          const chiave = `${cella.pezzo}_${cella.colorePezzo}`;
+          rigaFEN += mappaPezzi[chiave] ?? '?';
+        }
+      }
+      if (vuote > 0) rigaFEN += vuote;
+      return rigaFEN;
+    }).join('/') + ' w - - 0 1'; // parte finale semplificata
+  }
+
+  restartGame(): void {
+    console.log('🔁 Riavvio della partita in corso...');
+
+    // 🔹 1. Reset completo dello stato del componente
+    this.gameEnded = false;
+    this.gameStarted = false;
+    this.loading = true;
+    this.risultato = '';
+    this.mosse = [];
+    this.selectedPezzo = null;
+    this.scacchiera = Array.from({ length: 8 }, () => Array(8).fill(null));
+
+    // 🔹 2. Richiedi una nuova partita al backend
+    this.partitaService.startPartita().subscribe({
+      next: (nuovaPartita) => {
+        console.log('✅ Nuova partita ricevuta:', nuovaPartita);
+        this.partita = nuovaPartita;
+
+        // 🔹 3. Ricostruisci la scacchiera
+        this.convertResponse(nuovaPartita);
+        this.loading = false;
+        this.gameStarted = true;
+
+        // 🔊 suono d’avvio
+        const audio = new Audio('chess-pieces-hitting-wooden-board-99336_vlXIuPS5.mp3');
+        audio.play().catch(() => {});
+      },
+      error: (err) => {
+        console.error('❌ Errore durante il riavvio della partita:', err);
+        this.loading = false;
+      }
+    });
+  }
+
+  goHome() {
+    this.route.navigate(['']); //
+  }
+
 }
 
