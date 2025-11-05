@@ -385,7 +385,8 @@
   align-self: flex-start;
   margin-left: 31rem; /* sposta a destra delle card */
   margin-top: -40rem;  /* regola verticale se serve */
-  width: 1000px;
+  margin-right: 30rem;
+  width: 38rem;
   max-width: 100%;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 16px;

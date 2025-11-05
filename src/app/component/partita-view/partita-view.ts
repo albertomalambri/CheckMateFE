@@ -383,8 +383,5 @@ export class PartitaViewComponent implements OnInit {
       return rigaFEN;
     }).join('/') + ' w - - 0 1'; // parte finale semplificata
   }
-
-
-
 }
 
