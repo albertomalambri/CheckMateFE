@@ -33,7 +33,57 @@ body {
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
+/* === CONTROLLI INIZIO PARTITA === */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
 
+/* Stile per il bottone "Inizia Partita" (scelto il blu) */
+.start-btn {
+  background: linear-gradient(90deg, #007bff, #00c4ff);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 150, 255, 0.2);
+}
+
+.start-btn:hover:not(:disabled) {
+  background: linear-gradient(90deg, #0056b3, #00aaff);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 150, 255, 0.3);
+}
+
+.start-btn:disabled {
+  background: #5a5a5a;
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: scale(1);
+  box-shadow: none;
+}
+
+/* === LAYOUT PARTITA IN CORSO === */
+/* Contenitore per Info e Scacchiera */
+.game-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap; /* Va a capo su schermi piccoli */
+  gap: 30px;
+  width: 100%;
+  max-width: 1000px; /* Limite massimo */
+}
+
+/* === BOX INFO PARTITA === */
 .info-partita {
   background-color: #1e1e1e;           /* grigio molto scuro, più moderno */
   padding: 16px 20px;                  /* meno ingombrante */
@@ -43,6 +93,9 @@ body {
 
   border: 1px solid #3a3a3a;           /* bordo sottile per definizione */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 300px; /* Larghezza fissa per il box info */
+  min-width: 250px;
+  text-align: left;
 }
 
 .info-partita:hover {
@@ -59,6 +112,8 @@ body {
 .info-partita strong {
   color: #ffb74d;                      /* accento ambrato/caldo, elegante */
   font-weight: 600;
+  min-width: 60px;
+  display: inline-block;
 }
 
 /* eventuale titolo interno come "Mossa principale" */
@@ -102,6 +157,14 @@ body {
   gap: 8px;
   align-items: center;
   margin-top: 10px;
+  font-size: 0.9rem;
+}
+.mossa-principale .numero-mossa {
+  color: #ccc;
+}
+.mossa-principale .descrizione-mossa {
+  color: #fff;
+  font-weight: 500;
 }
 
 .tag-mossa {
@@ -116,21 +179,19 @@ body {
 .tag-mossa.arrocco { background-color: #a04000; }
 .tag-mossa.promozione { background-color: #f39c12; color: #1c1c1c; }
 
-/*
+/* Scacchiera */
 .scacchiera {
-  width: 90%;
-  max-width: 600px;
-  aspect-ratio: 1 / 1;
+  width: 600px;
+  max-width: 90vw;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(8, 1fr);
+  aspect-ratio: 1 / 1;
   gap: 2px;
   border: 10px solid #d35400;
   border-radius: 10px;
-  box-sizing: border-box;
-  margin: 0 auto;
+  margin: 0 auto;           /* centra orizzontalmente */
 }
-*/
+
 /* Celle */
 .cella {
   aspect-ratio: 1 / 1;      /* sempre quadrate */
@@ -152,6 +213,56 @@ body {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  cursor: grab;
+  filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.4));
+}
+.cella app-pedone:active,
+.cella app-torre:active,
+.cella app-cavallo:active,
+.cella app-alfiere:active,
+.cella app-regina:active,
+.cella app-re:active {
+  cursor: grabbing;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+
+  /* Questo è FONDAMENTALE per centrare */
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  z-index: 9999;
+  opacity: 1 !important; /* Assicurati che l'overlay sia visibile */
+}
+
+.modal {
+  /* === TEST DI DEBUG ESTREMO === */
+  background-color: #ff0000 !important;  /* Sfondo ROSSO VIVO */
+  border: 10px solid #ffff00 !important; /* Bordo GIALLO VIVO */
+  color: #000000 !important;             /* Testo NERO */
+  width: 400px !important;               /* Larghezza FISSA */
+  height: 400px !important;              /* Altezza FISSA */
+
+  /* Resetta qualsiasi altra cosa */
+  position: relative !important;
+  transform: scale(1) !important;
+  animation: none !important;
+  opacity: 1 !important;
+  z-index: 100000 !important; /* Sopra l'overlay */
+
+  /* Stili originali che non dovrebbero dare fastidio */
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
 }
 
 /* Colori celle */
@@ -165,16 +276,44 @@ body {
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
+  color: #ffb74d; /* Colore accento */
+}
+
+.modal-text {
+  margin-bottom: 1.2rem;
+  font-size: 1.1rem;
+}
+
+/* Stili per la sezione statistiche (aggiunti) */
+.statistiche {
+  text-align: left;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #333333; /* Sfondo leggero scuro */
+  border-radius: 8px;
+  border: 1px solid #444;
+}
+
+.statistiche p {
+  margin: 0.7rem 0;
+  font-size: 0.95rem;
+  color: #ddd;
+  display: flex;
+  justify-content: space-between;
 }
 
 .start-btn {
   background: #3c3c3c;
   color: chocolate;
   border: none;
-  padding: 5rem 1.2rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  flex-grow: 1; /* Occupa spazio simile */
 }
 
 .start-btn:disabled {
@@ -210,6 +349,10 @@ body {
   50% { opacity: 1; }
 }
 
+.btn-secondary:hover {
+  background: #e57373;
+  transform: translateY(-2px);
+}
 
 
 
@@ -424,6 +567,91 @@ body {
     transform: translateX(0);
   }
 }
+/* Sfondo scuro dietro il modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Contenitore centrale */
+.modal-container {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 2rem 2.5rem;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Titolo */
+.modal-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: #222;
+}
+
+/* Testo */
+.modal-message {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+
+/* Pulsanti */
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.7rem 1.4rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: #4338ca;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #111;
+  border: 1px solid #d1d5db;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+/* Effetto entrata */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 
 
 

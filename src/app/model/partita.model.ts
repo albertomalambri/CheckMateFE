@@ -23,9 +23,9 @@ export interface ScacchieraGameStateDTO {
   id:number;
   scacchiera: cellaDTO[][];
   currentPlayer: string;
-  isCheck:boolean;
-  isCheckMate:boolean;
-  isStallo : boolean;
+  check:boolean;
+  checkMate:boolean;
+  stallo : boolean;
 }
 export interface Partita
 {

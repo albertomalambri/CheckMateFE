@@ -28,7 +28,6 @@
       <div class="col-labels top">
         <div *ngFor="let c of colonne" class="col-label">{{ c.toUpperCase() }}</div>
       </div>
-
       <div class="scacchiera-righe">
         @for (r of righe; track $index) {
           <div class="riga">
@@ -71,6 +70,13 @@
       </div>
     </div>
   </div>
+  @if (gameEnded) {
+    <div class="modal-actions">
+      <p style="color:white"><strong>{{risultato}}</strong></p>
+      <button class="btn btn-primary" (click)="restartGame()">Nuova Partita</button>
+      <button class="btn btn-secondary" (click)="goHome()"> Torna alla Home</button>
+    </div>
+  }
 }
 
 

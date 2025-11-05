@@ -1,5 +1,7 @@
+import {Partita} from './partita.model';
+
 export interface User {
-  id: number;
+  id: string;
   username: string;
   email?: string;
   token?: string;
@@ -9,4 +11,6 @@ export interface User {
   winRate?: number;
   role?: string;
   avatar?: string;
+
+  partite?: Partita[];
 }
