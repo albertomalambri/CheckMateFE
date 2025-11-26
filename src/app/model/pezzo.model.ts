@@ -4,9 +4,9 @@ export interface Pezzo {
 }
 export enum PezzoCodice {
   ALFIERE = 'AL',
-  PEDONE = 'PE',
-  REGINA = 'RG',
-  RE = 'RE',
-  TORRE = 'TO',
+  PEDONE =  'PE',
+  REGINA =  'RG',
+  RE =      'RE',
+  TORRE =   'TO',
   CAVALLO = 'CA'
 }
